@@ -69,16 +69,15 @@
     }
 
     .hero {
-      min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 4rem 0;
+      padding: 6rem 0 4rem;
     }
 
     .hero .container {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       gap: 3rem;
     }
 
@@ -105,7 +104,6 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1.2rem;
-      max-width: 640px;
       margin-top: 2.2rem;
     }
     .step .step-num {
@@ -123,7 +121,7 @@
       .hero-photo img { width: 110px; height: 110px; }
       .hero-text { text-align: center; }
       .hero .button-row { justify-content: center; }
-      .hero .steps-row { max-width: 420px; margin-left: auto; margin-right: auto; }
+      .hero .steps-row { display: none; }
       .hero .stat-row { margin-left: auto; margin-right: auto; }
     }
 
@@ -133,6 +131,7 @@
       line-height: 1.15;
       margin: 0 0 1.1rem;
       font-weight: 800;
+      text-wrap: balance;
     }
 
     .accent-text { color: var(--accent); }
@@ -140,7 +139,6 @@
     .lead {
       font-size: 1.08rem;
       color: var(--muted);
-      max-width: 620px;
       margin-bottom: 2rem;
     }
 
@@ -160,12 +158,18 @@
     .stat-row {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-      max-width: 620px;
+      gap: 0.8rem;
       border-top: 1px solid var(--line);
       padding-top: 1.6rem;
     }
-    .stat-row .num { font-family: 'Unbounded', sans-serif; font-size: clamp(1.3rem, 2.6vw, 2rem); font-weight: 800; color: var(--accent); white-space: nowrap; }
+    .stat-row .num { font-family: 'Unbounded', sans-serif; font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 800; color: var(--accent); white-space: nowrap; }
+    .stat-row > div {
+      padding: 1rem 0.6rem;
+      border-radius: 14px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      text-align: center;
+    }
     .stat-row .label { color: var(--muted); font-size: 0.85rem; }
 
     section { padding: 3.5rem 0; }
@@ -486,7 +490,7 @@
           <img src="photo.png" alt="Александр Якименко" />
         </div>
         <div class="badge">Ассистент · Проектный менеджмент · Операционка</div>
-        <h1>Александр — беру операционку<br />и <span class="accent-text">хаос</span> на себя</h1>
+        <h1>Александр — беру операционку и <span class="accent-text">хаос</span> на себя</h1>
         <p class="lead">
           20 лет, Москва. 4 месяца прямой операционной работы замCEO в растущей компании: переговоры с клиентами, контроль команды, документооборот и процессы — построенные с нуля, а не унаследованные.
         </p>
