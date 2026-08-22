@@ -123,6 +123,7 @@
       .hero .button-row { justify-content: center; }
       .hero .steps-row { display: none; }
       .hero .stat-row { margin-left: auto; margin-right: auto; }
+      h1 { font-size: clamp(1.7rem, 8vw, 2.4rem); line-height: 1.3; }
     }
 
     h1 {
@@ -403,7 +404,7 @@
     }
     .trait-card:hover { transform: translateY(-4px); border-color: rgba(193,127,62,0.3); }
     .trait-card .emoji { font-size: 1.8rem; margin-bottom: 0.5rem; }
-    .trait-card .title { font-weight: 700; margin-bottom: 0.3rem; }
+    .trait-card .title { font-weight: 700; margin-bottom: 0.3rem; overflow-wrap: break-word; }
     .trait-card .desc { color: var(--muted); font-size: 0.85rem; }
 
     .ps-panel {
@@ -667,7 +668,7 @@
         <div class="traits-grid">
           <div class="trait-card">
             <div class="emoji">🧭</div>
-            <div class="title">Самостоятельный</div>
+            <div class="title">Автономный</div>
             <div class="desc">Не жду инструкции на каждый шаг — сам предлагаю решение и прихожу с готовым вариантом</div>
           </div>
           <div class="trait-card">
