@@ -4,6 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Александр Якименко — ассистент / проектный менеджмент</title>
+  <meta name="description" content="Александр Якименко, 20 лет — ассистент / проектный менеджмент. 4 месяца операционной работы замCEO: рост команды с 3 до 12 человек, построение процессов с нуля, координация 4 клиентских проектов." />
+  <meta property="og:title" content="Александр Якименко — ассистент / проектный менеджмент" />
+  <meta property="og:description" content="4 месяца операционной работы замCEO: рост команды с 3 до 12 человек, построение процессов с нуля, координация 4 клиентских проектов." />
+  <meta property="og:image" content="https://alex46796.github.io/Landing/photo.png" />
+  <meta property="og:url" content="https://alex46796.github.io/Landing/" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/png" href="favicon-mark.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -21,7 +29,7 @@
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scrollbar-color: var(--accent) var(--bg-2); scrollbar-width: thin; }
     body {
       margin: 0;
       font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -33,6 +41,18 @@
 
     a { color: inherit; text-decoration: none; }
     .container { width: min(1100px, calc(100% - 2.5rem)); margin: 0 auto; }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg-2); }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #e0a468, var(--accent));
+      border-radius: 999px;
+      box-shadow: 0 0 8px rgba(193,127,62,0.55);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #f0b57a, var(--accent));
+      box-shadow: 0 0 12px rgba(193,127,62,0.75);
+    }
 
     .badge {
       display: inline-block;
@@ -135,13 +155,13 @@
 
     .stat-row {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1rem;
-      max-width: 420px;
+      max-width: 620px;
       border-top: 1px solid var(--line);
       padding-top: 1.6rem;
     }
-    .stat-row .num { font-family: 'Unbounded', sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent); }
+    .stat-row .num { font-family: 'Unbounded', sans-serif; font-size: clamp(1.3rem, 2.6vw, 2rem); font-weight: 800; color: var(--accent); white-space: nowrap; }
     .stat-row .label { color: var(--muted); font-size: 0.85rem; }
 
     section { padding: 3.5rem 0; }
@@ -153,7 +173,7 @@
 
     .achievements-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1.2rem;
     }
 
@@ -167,10 +187,10 @@
     .achievement-card:hover { transform: translateY(-6px); border-color: rgba(193,127,62,0.45); }
     .achievement-card .big-num {
       font-family: 'Unbounded', sans-serif;
-      font-size: 2.6rem;
+      font-size: clamp(1.7rem, 3.2vw, 2.6rem);
       font-weight: 800;
       color: var(--accent);
-      line-height: 1;
+      line-height: 1.1;
       margin-bottom: 0.6rem;
     }
     .achievement-card .desc { color: var(--muted); font-size: 0.95rem; }
@@ -186,7 +206,9 @@
       border-radius: 16px;
       background: var(--panel);
       border: 1px solid var(--panel-border);
+      transition: transform 220ms ease, border-color 220ms ease;
     }
+    .card:hover { transform: translateY(-4px); border-color: rgba(193,127,62,0.3); }
     .card h4 { margin-top: 0; margin-bottom: 0.7rem; }
     .card p { color: var(--muted); margin: 0; }
     #honest .card p { font-size: 1.15rem; line-height: 1.65; }
@@ -213,8 +235,8 @@
     .site-card {
       padding: 1.6rem;
       border-radius: 16px;
-      background: var(--panel);
-      border: 1px solid var(--panel-border);
+      background: var(--accent-dim);
+      border: 1px solid rgba(193,127,62,0.4);
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
@@ -224,11 +246,25 @@
       font-size: 1rem;
       color: inherit;
       cursor: pointer;
-      transition: transform 220ms ease, border-color 220ms ease;
+      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
     }
-    .site-card:hover, .site-card:focus-visible { transform: translateY(-6px); border-color: rgba(193,127,62,0.45); }
+    .site-card:hover, .site-card:focus-visible { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 16px 34px rgba(193,127,62,0.2); }
+    .site-card .case-badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #1a1410;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      margin-bottom: 0.2rem;
+    }
     .site-card h4 { margin: 0; }
     .site-card p { color: var(--muted); margin: 0; }
+    .site-card .site-role { color: var(--text); font-size: 0.85rem; font-weight: 600; }
     .site-card .site-cta { color: var(--accent); font-weight: 700; margin-top: 0.4rem; }
 
     .modal-overlay {
@@ -291,7 +327,7 @@
       overflow: hidden;
       background: #000;
     }
-    .modal-slider-img { width: 100%; display: block; aspect-ratio: 16 / 10; object-fit: cover; }
+    .modal-slider-img { width: 100%; display: block; aspect-ratio: 16 / 10; object-fit: cover; transition: opacity 180ms ease; }
     .modal-slider-nav {
       position: absolute;
       top: 50%;
@@ -355,7 +391,9 @@
       background: var(--panel);
       border: 1px solid var(--panel-border);
       text-align: center;
+      transition: transform 220ms ease, border-color 220ms ease;
     }
+    .trait-card:hover { transform: translateY(-4px); border-color: rgba(193,127,62,0.3); }
     .trait-card .emoji { font-size: 1.8rem; margin-bottom: 0.5rem; }
     .trait-card .title { font-weight: 700; margin-bottom: 0.3rem; }
     .trait-card .desc { color: var(--muted); font-size: 0.85rem; }
@@ -381,6 +419,51 @@
 
     .footer { padding: 2rem 0 3rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
 
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: var(--accent);
+      z-index: 90;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent);
+      color: #1a1410;
+      font-size: 1.3rem;
+      font-weight: 800;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 220ms ease, transform 220ms ease, visibility 220ms;
+      box-shadow: 0 10px 24px rgba(193,127,62,0.35);
+      z-index: 80;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+    .section-title { position: relative; display: inline-block; padding-bottom: 0.7rem; }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 0;
+      background: var(--accent);
+      transition: width 700ms ease;
+    }
+    .section-title.underlined::after { width: 56px; }
+
     @media (max-width: 860px) {
       .stat-row, .achievements-grid, .grid-2, .sites-grid, .steps-row { grid-template-columns: 1fr; }
       .traits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -390,6 +473,7 @@
   </style>
 </head>
 <body id="top">
+  <div class="scroll-progress" id="scrollProgress"></div>
 
   <header class="hero">
     <div class="container">
@@ -405,6 +489,7 @@
         <div class="button-row">
           <a class="btn btn-primary" href="#contact">Связаться</a>
           <a class="btn btn-secondary" href="#cases">Кейсы</a>
+          <a class="btn btn-secondary" href="resume.pdf" download>Скачать резюме</a>
         </div>
         <div class="steps-row">
           <div class="step">
@@ -426,8 +511,12 @@
             <div class="label">человек в команде</div>
           </div>
           <div>
-            <div class="num" data-target="14">0</div>
-            <div class="label">лет в спорте</div>
+            <div class="num" data-target="4">0</div>
+            <div class="label">сайта для клиентов</div>
+          </div>
+          <div>
+            <div class="num" data-target="200000" data-suffix=" ₽+">0</div>
+            <div class="label">сумма закрытых сделок</div>
           </div>
         </div>
       </div>
@@ -451,12 +540,16 @@
         <p class="section-sub">Agile Business — операционное управление, замCEO</p>
         <div class="achievements-grid">
           <div class="achievement-card">
-            <div class="big-num">×4</div>
+            <div class="big-num" data-target="4" data-prefix="×">×0</div>
             <div class="desc">рост команды — с 3 до 12 человек, с нуля выстроенные процессы найма и адаптации</div>
           </div>
           <div class="achievement-card">
-            <div class="big-num">0</div>
+            <div class="big-num" data-target="0">0</div>
             <div class="desc">потерянных заявок после внедрения трекинга задач (Yougile)</div>
+          </div>
+          <div class="achievement-card">
+            <div class="big-num" data-target="200000" data-suffix=" ₽+" style="white-space: nowrap; font-size: 1.7rem;">0</div>
+            <div class="desc">сумма сделок, по которым лично согласовывал цену с клиентами</div>
           </div>
         </div>
       </div>
@@ -497,23 +590,31 @@
         <p class="section-sub">Реальные проекты, сделанные командой, которую я координировал — нажми на карточку, чтобы открыть кейс</p>
         <div class="sites-grid">
           <button type="button" class="site-card" data-case="boostmarine">
+            <span class="case-badge">Кейс</span>
             <h4>Boost Marine</h4>
             <p>Корпоративный сайт компании по ремонту водной техники — услуги, портфолио работ, команда, магазин запчастей.</p>
+            <p class="site-role">Моя роль: контроль сроков и координация команды с клиентом</p>
             <span class="site-cta">Смотреть кейс →</span>
           </button>
           <button type="button" class="site-card" data-case="a13">
+            <span class="case-badge">Кейс</span>
             <h4>Бюро А13</h4>
             <p>Сайт архитектурного бюро, специализирующегося на светопрозрачных конструкциях и фасадных системах.</p>
+            <p class="site-role">Моя роль: контроль сроков и координация команды с клиентом</p>
             <span class="site-cta">Смотреть кейс →</span>
           </button>
           <button type="button" class="site-card" data-case="revolutionprint">
+            <span class="case-badge">Кейс</span>
             <h4>Revolution Print</h4>
             <p>MVP-платформа для отдела продаж и производства: калькулятор стоимости печати, CRM для клиентов, заказы, генератор документов.</p>
+            <p class="site-role">Моя роль: контроль сроков и координация команды с клиентом</p>
             <span class="site-cta">Смотреть кейс →</span>
           </button>
           <button type="button" class="site-card" data-case="aartatelier">
+            <span class="case-badge">Кейс</span>
             <h4>Aart Atelier</h4>
             <p>Креативное бюро: арт-консалтинг, дизайн интерьера, брендинг, видеопродакшн, кураторские проекты.</p>
+            <p class="site-role">Моя роль: контроль сроков и координация команды с клиентом</p>
             <span class="site-cta">Смотреть кейс →</span>
           </button>
         </div>
@@ -596,6 +697,8 @@
           <span class="tag">Подготовка документов и ТЗ</span>
           <span class="tag">Деловая переписка и переговоры</span>
           <span class="tag">Построение найма и адаптации</span>
+          <span class="tag">Подготовка отчётов и материалов для руководства</span>
+          <span class="tag">Календарь и встречи руководителя</span>
           <span class="tag">Yougile · быстро осваиваю новые трекеры задач</span>
           <span class="tag">Координация с подрядчиками</span>
           <span class="tag">MS Excel / Google Sheets</span>
@@ -639,6 +742,10 @@
     </div>
   </div>
 
+  <button type="button" class="back-to-top" id="backToTop" aria-label="Наверх">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
