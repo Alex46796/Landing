@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Александр Якименко — ассистент / проектный менеджмент</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #16110d;
+      --bg-2: #241a12;
+      --panel: rgba(255,235,210,0.04);
+      --panel-border: rgba(255,235,210,0.10);
+      --text: #f5efe8;
+      --muted: #b5a58f;
+      --accent: #c17f3e;
+      --accent-dim: rgba(193,127,62,0.16);
+      --line: rgba(255,235,210,0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 0%, var(--bg-2), var(--bg) 55%);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1100px, calc(100% - 2.5rem)); margin: 0 auto; }
+
+    .badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid rgba(193,127,62,0.4);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 4rem 0;
+    }
+
+    .hero .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+    }
+
+    .hero-text { flex: 1.2; min-width: 0; }
+
+    .hero-photo {
+      display: inline-flex;
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      transform: translateY(20px) scale(0.96);
+      transition: opacity 900ms ease, transform 900ms ease;
+    }
+    .hero-photo.visible { opacity: 1; transform: translateY(0) scale(1); }
+    .hero-photo img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--accent);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+      max-width: 640px;
+      margin-top: 2.2rem;
+    }
+    .step .step-num {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--accent);
+      border-top: 2px solid var(--accent);
+      display: inline-block;
+      padding-top: 0.4rem;
+      margin-bottom: 0.6rem;
+    }
+    .step .step-text { color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
+
+    @media (max-width: 860px) {
+      .hero-photo img { width: 110px; height: 110px; }
+    }
+
+    h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+      line-height: 1.15;
+      margin: 0 0 1.1rem;
+      font-weight: 800;
+    }
+
+    .accent-text { color: var(--accent); }
+
+    .lead {
+      font-size: 1.08rem;
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 2rem;
+    }
+
+    .button-row { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem; }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 1.4rem;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-primary { background: var(--accent); color: #1a1410; box-shadow: 0 10px 30px rgba(193,127,62,0.35); }
+    .btn-secondary { background: transparent; border: 1px solid var(--line); color: var(--text); }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      max-width: 420px;
+      border-top: 1px solid var(--line);
+      padding-top: 1.6rem;
+    }
+    .stat-row .num { font-family: 'Unbounded', sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent); }
+    .stat-row .label { color: var(--muted); font-size: 0.85rem; }
+
+    section { padding: 3.5rem 0; }
+    .section-title { font-family: 'Unbounded', sans-serif; font-size: 1.7rem; margin-bottom: 0.4rem; }
+    .section-sub { color: var(--muted); margin-bottom: 2rem; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 600ms ease, transform 600ms ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .achievement-card {
+      padding: 1.6rem;
+      border-radius: 18px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      transition: transform 220ms ease, border-color 220ms ease;
+    }
+    .achievement-card:hover { transform: translateY(-6px); border-color: rgba(193,127,62,0.45); }
+    .achievement-card .big-num {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+    .achievement-card .desc { color: var(--muted); font-size: 0.95rem; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .card {
+      padding: 1.6rem;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+    }
+    .card h4 { margin-top: 0; margin-bottom: 0.7rem; }
+    .card p { color: var(--muted); margin: 0; }
+    #honest .card p { font-size: 1.15rem; line-height: 1.65; }
+    .card ul { color: var(--muted); margin: 0.6rem 0 0; padding-left: 1.2rem; }
+    .card li { margin-bottom: 0.4rem; }
+    .card .result { color: var(--text); margin-top: 0.8rem; font-weight: 600; }
+    .card .result span { color: var(--accent); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .tag {
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .sites-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+    .site-card {
+      padding: 1.6rem;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      font-size: 1rem;
+      color: inherit;
+      cursor: pointer;
+      transition: transform 220ms ease, border-color 220ms ease;
+    }
+    .site-card:hover, .site-card:focus-visible { transform: translateY(-6px); border-color: rgba(193,127,62,0.45); }
+    .site-card h4 { margin: 0; }
+    .site-card p { color: var(--muted); margin: 0; }
+    .site-card .site-cta { color: var(--accent); font-weight: 700; margin-top: 0.4rem; }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,7,5,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 250ms ease;
+      z-index: 100;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+    .modal-panel {
+      position: relative;
+      max-width: 560px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 2.2rem;
+      border-radius: 20px;
+      background: var(--bg-2);
+      border: 1px solid var(--panel-border);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+      transform: translateY(16px) scale(0.98);
+      transition: transform 250ms ease;
+    }
+    .modal-overlay.open .modal-panel { transform: translateY(0) scale(1); }
+    .modal-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      border: 1px solid var(--panel-border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close:hover { color: var(--text); border-color: rgba(193,127,62,0.45); }
+    .modal-panel h3 { margin: 0 0 0.8rem; font-size: 1.4rem; padding-right: 2rem; }
+    .modal-panel .modal-desc { color: var(--muted); margin: 0; }
+    .modal-details { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 0.8rem; }
+    .modal-detail-row .modal-detail-label { color: var(--accent); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+    .modal-detail-row .modal-detail-value { color: var(--text); }
+    .modal-link { display: inline-block; margin-top: 1.4rem; color: var(--accent); font-weight: 700; }
+
+    .modal-slider {
+      position: relative;
+      margin: -2.2rem -2.2rem 1.4rem;
+      border-radius: 20px 20px 0 0;
+      overflow: hidden;
+      background: #000;
+    }
+    .modal-slider-img { width: 100%; display: block; aspect-ratio: 16 / 10; object-fit: cover; }
+    .modal-slider-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-slider-nav:hover { background: rgba(0,0,0,0.8); }
+    .modal-slider-prev { left: 0.7rem; }
+    .modal-slider-next { right: 0.7rem; }
+    .modal-slider-dots {
+      position: absolute;
+      bottom: 0.7rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.4rem;
+    }
+    .modal-slider-dots .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      cursor: pointer;
+    }
+    .modal-slider-dots .dot.active { background: #fff; }
+
+    .card-photo {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .card-photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(22,17,13,0.92), rgba(22,17,13,0.68));
+      z-index: 0;
+    }
+    .card-photo > * { position: relative; z-index: 1; }
+
+    .traits-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .trait-card {
+      padding: 1.3rem;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      text-align: center;
+    }
+    .trait-card .emoji { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .trait-card .title { font-weight: 700; margin-bottom: 0.3rem; }
+    .trait-card .desc { color: var(--muted); font-size: 0.85rem; }
+
+    .ps-panel {
+      padding: 1.8rem;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px dashed var(--panel-border);
+      color: var(--muted);
+    }
+    .ps-panel b { color: var(--text); }
+
+    .contact-panel {
+      padding: 2.2rem;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--accent-dim), transparent);
+      border: 1px solid rgba(193,127,62,0.35);
+      text-align: center;
+    }
+    .contact-panel h3 { font-size: 1.5rem; margin-top: 0; }
+    .contact-panel p { color: var(--muted); }
+
+    .footer { padding: 2rem 0 3rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
+
+    @media (max-width: 860px) {
+      .stat-row, .achievements-grid, .grid-2, .sites-grid, .steps-row { grid-template-columns: 1fr; }
+      .traits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .modal-panel { padding: 1.6rem; }
+      .modal-slider { margin: -1.6rem -1.6rem 1.4rem; }
+    }
+  </style>
+</head>
+<body id="top">
+
+  <header class="hero">
+    <div class="container">
+      <div class="hero-text">
+        <div class="hero-photo" id="heroPhoto">
+          <img src="photo.png" alt="Александр Якименко" />
+        </div>
+        <div class="badge">Ассистент · Проектный менеджмент · Операционка</div>
+        <h1>Александр — беру операционку<br />и <span class="accent-text">хаос</span> на себя</h1>
+        <p class="lead">
+          20 лет, Москва. 4 месяца прямой операционной работы замCEO в растущей компании: переговоры с клиентами, контроль команды, документооборот и процессы — построенные с нуля, а не унаследованные.
+        </p>
+        <div class="button-row">
+          <a class="btn btn-primary" href="#contact">Связаться</a>
+          <a class="btn btn-secondary" href="#cases">Кейсы</a>
+        </div>
+        <div class="steps-row">
+          <div class="step">
+            <div class="step-num">01</div>
+            <div class="step-text">Строю процессы и регламенты под конкретную команду</div>
+          </div>
+          <div class="step">
+            <div class="step-num">02</div>
+            <div class="step-text">Веду документооборот, ТЗ и переговоры с клиентами</div>
+          </div>
+          <div class="step">
+            <div class="step-num">03</div>
+            <div class="step-text">Подбираю и координирую людей и подрядчиков</div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div>
+            <div class="num" data-target="12">0</div>
+            <div class="label">человек в команде</div>
+          </div>
+          <div>
+            <div class="num" data-target="14">0</div>
+            <div class="label">лет в спорте</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="honest">
+      <div class="container reveal">
+        <div class="card">
+          <p>
+            Мне 20, я на 3 курсе РАНХиГС по направлению «Менеджмент», и супер-амбициозных результатов мирового масштаба я пока не добился. Но у меня есть то, что редко встретишь в этом возрасте: реальный опыт построения процессов с нуля для живой команды — не в теории, а руками. Это не разовая проба — я осознанно иду в операционку и управление: цель — стать COO, а дальше построить своё дело, и каждую позицию рассматриваю как шаг к этому, а не просто строчку в резюме. Дальше — конкретные кейсы, за каждый из которых я могу ответить на собеседовании.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="achievements">
+      <div class="container reveal">
+        <h2 class="section-title">Результаты за 4 месяца</h2>
+        <p class="section-sub">Agile Business — операционное управление, замCEO</p>
+        <div class="achievements-grid">
+          <div class="achievement-card">
+            <div class="big-num">×4</div>
+            <div class="desc">рост команды — с 3 до 12 человек, с нуля выстроенные процессы найма и адаптации</div>
+          </div>
+          <div class="achievement-card">
+            <div class="big-num">0</div>
+            <div class="desc">потерянных заявок после внедрения трекинга задач (Yougile)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cases">
+      <div class="container reveal">
+        <h2 class="section-title">Кейсы</h2>
+        <p class="section-sub">Что я построил сам, от идеи до результата</p>
+        <div class="grid-2">
+          <div class="card">
+            <h4>Операционный регламент команды</h4>
+            <p>Когда команда выросла с 3 до 12 человек, начался хаос. Внедрил ежедневные стендапы, недельное планирование, протокол ранней эскалации срывов сроков вместо культуры поиска виноватых.</p>
+            <p class="result">Результат: <span>число сорванных дедлайнов сократилось</span>, хаос в коммуникации снижен в 4 раза при росте команды.</p>
+          </div>
+          <div class="card">
+            <h4>Воронка продаж консалтинговых услуг</h4>
+            <p>Спроектировал полный цикл продаж: скрипты первого контакта, структуру диагностики и КП, работу с возражениями, механику удержания клиента после сделки.</p>
+            <p class="result">Результат: <span>полный цикл продаж</span>, применённый на реальных сделках компании.</p>
+          </div>
+          <div class="card">
+            <h4>Запуск компании на рынок за 4 недели</h4>
+            <p>Разработал и вёл поэтапный план вывода компании на рынок: фундамент и финансы → упаковка продуктов → прайс и визитка → выход на рынок, с конкретным результатом на каждую неделю.</p>
+            <p class="result">Результат: <span>компания вышла на рынок</span>, все 4 этапа доведены до результата, несмотря на отклонение части команды от плана.</p>
+          </div>
+          <div class="card">
+            <h4>Корпоративная культура и роли в команде</h4>
+            <p>Заложил ценности совместной работы (прозрачность, no-blame, честность с клиентом) и расписал должностные обязанности для 6 человек команды с чёткими зонами ответственности.</p>
+            <p class="result">Результат: <span>прозрачные правила и роли</span> вместо хаоса при масштабировании 3 → 12 человек.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sites">
+      <div class="container reveal">
+        <h2 class="section-title">Сайты под моим руководством</h2>
+        <p class="section-sub">Реальные проекты, сделанные командой, которую я координировал — нажми на карточку, чтобы открыть кейс</p>
+        <div class="sites-grid">
+          <button type="button" class="site-card" data-case="boostmarine">
+            <h4>Boost Marine</h4>
+            <p>Корпоративный сайт компании по ремонту водной техники — услуги, портфолио работ, команда, магазин запчастей.</p>
+            <span class="site-cta">Смотреть кейс →</span>
+          </button>
+          <button type="button" class="site-card" data-case="a13">
+            <h4>Бюро А13</h4>
+            <p>Сайт архитектурного бюро, специализирующегося на светопрозрачных конструкциях и фасадных системах.</p>
+            <span class="site-cta">Смотреть кейс →</span>
+          </button>
+          <button type="button" class="site-card" data-case="revolutionprint">
+            <h4>Revolution Print</h4>
+            <p>MVP-платформа для отдела продаж и производства: калькулятор стоимости печати, CRM для клиентов, заказы, генератор документов.</p>
+            <span class="site-cta">Смотреть кейс →</span>
+          </button>
+          <button type="button" class="site-card" data-case="aartatelier">
+            <h4>Aart Atelier</h4>
+            <p>Креативное бюро: арт-консалтинг, дизайн интерьера, брендинг, видеопродакшн, кураторские проекты.</p>
+            <span class="site-cta">Смотреть кейс →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container reveal">
+        <h2 class="section-title">Кто я и откуда это всё</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h4>Операционная поддержка, а не поручения</h4>
+            <p>
+              Организовывал переговоры с клиентами, вёл документооборот проектов, контролировал исполнение задач командой — беря на себя рутину и хаос, чтобы у руководителя было время на стратегию.
+            </p>
+          </div>
+          <div class="card card-photo" style="background-image: url('decor-shotgun.webp');">
+            <h4>КМС по стендовой стрельбе</h4>
+            <p>
+              6 лет в стендовой стрельбе — быстрые решения под давлением и дисциплина здесь не абстракция, а рабочий режим, отработанный тренировками и соревнованиями.
+            </p>
+          </div>
+          <div class="card card-photo" style="background-image: url('decor-basketball.jpg');">
+            <h4>10 лет баскетбола</h4>
+            <p>
+              С детства в игре — дисциплина и привычка выкладываться на результат, которые давно стали частью характера.
+            </p>
+          </div>
+          <div class="card card-photo" style="background-image: url('decor-scales.webp');">
+            <h4>Надёжность в работе</h4>
+            <p>
+              Не подвожу команду и клиента — держу слово и довожу процессы до устойчивого результата, а не до вида, что всё сделано.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="traits">
+      <div class="container reveal">
+        <h2 class="section-title">Какой я в работе</h2>
+        <div class="traits-grid">
+          <div class="trait-card">
+            <div class="emoji">🧭</div>
+            <div class="title">Самостоятельный</div>
+            <div class="desc">Не жду инструкции на каждый шаг — сам предлагаю решение и прихожу с готовым вариантом</div>
+          </div>
+          <div class="trait-card">
+            <div class="emoji">🗂️</div>
+            <div class="title">Системный</div>
+            <div class="desc">Люблю порядок, структуру, регламенты — и умею их строить с нуля</div>
+          </div>
+          <div class="trait-card">
+            <div class="emoji">🎯</div>
+            <div class="title">Довожу до конца</div>
+            <div class="desc">Даже когда план сдвигается — довожу этапы до результата, а не бросаю на середине</div>
+          </div>
+          <div class="trait-card">
+            <div class="emoji">🤝</div>
+            <div class="title">Честный</div>
+            <div class="desc">Говорю прямо, где не хватает опыта, а не приукрашиваю — и учусь быстро там, где пробел</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ps">
+      <div class="container reveal">
+        <div class="ps-panel">
+          <p><b>P.S.</b> Я не только откликаюсь на вакансии — я написал себе Telegram-бота, который сам мониторит подходящие стажировки и вакансии и присылает их мне. Одну из позиций, на которую я откликался, нашёл именно так — до того, как понадобилось её искать вручную.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container reveal">
+        <h2 class="section-title">Навыки</h2>
+        <div class="tags">
+          <span class="tag">Планирование и контроль задач</span>
+          <span class="tag">Подготовка документов и ТЗ</span>
+          <span class="tag">Деловая переписка и переговоры</span>
+          <span class="tag">Построение найма и адаптации</span>
+          <span class="tag">Yougile · быстро осваиваю новые трекеры задач</span>
+          <span class="tag">Координация с подрядчиками</span>
+          <span class="tag">MS Excel / Google Sheets</span>
+          <span class="tag">Английский B2</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section id="contact">
+    <div class="container reveal">
+      <div class="contact-panel">
+        <h3>Ищу позицию ассистента / проектного менеджмента</h3>
+        <p>Москва или удалённо · готов закрыть операционную нагрузку, документооборот и координацию команды</p>
+        <div class="button-row" style="justify-content: center;">
+          <a class="btn btn-primary" href="https://t.me/ALL_EX18">Telegram</a>
+          <a class="btn btn-secondary" href="mailto:Xyakimenko200656@gmail.com">Email</a>
+          <a class="btn btn-secondary" href="tel:+79775689460">+7 (977) 568-94-60</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">Александр Якименко — беру операционку и хаос на себя, чтобы у вас было время на главное.</div>
+  </footer>
+
+  <div class="modal-overlay" id="caseModalOverlay">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="caseModalTitle">
+      <button type="button" class="modal-close" id="caseModalClose" aria-label="Закрыть">✕</button>
+      <div class="modal-slider" id="caseModalSlider" hidden>
+        <img class="modal-slider-img" id="caseModalSliderImg" src="" alt="" />
+        <button type="button" class="modal-slider-nav modal-slider-prev" id="caseModalPrev" aria-label="Предыдущее фото">‹</button>
+        <button type="button" class="modal-slider-nav modal-slider-next" id="caseModalNext" aria-label="Следующее фото">›</button>
+        <div class="modal-slider-dots" id="caseModalDots"></div>
+      </div>
+      <h3 id="caseModalTitle"></h3>
+      <p class="modal-desc" id="caseModalDesc"></p>
+      <div class="modal-details" id="caseModalDetails" hidden></div>
+      <a class="modal-link" id="caseModalLink" target="_blank" rel="noopener" hidden>Открыть сайт →</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

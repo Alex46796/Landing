@@ -1,0 +1,2512 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Revolution Print Platform — MVP</title>
+
+  <style>
+    :root{
+      /* Палитра (photo2: 1,3,5) */
+      --chestnut:#480903;
+      --desert:#E5D1A4;
+      --copper:#864B12;
+
+      --bg:#f6f4ef;
+      --panel:#ffffff;
+      --text:#1c1c1c;
+      --muted:#6d6d6d;
+      --line:rgba(0,0,0,.08);
+
+      --r-xl:24px;
+      --r-lg:18px;
+      --r-md:14px;
+      --r-sm:10px;
+
+      --shadow:0 12px 30px rgba(0,0,0,.10);
+      --shadow-soft:0 8px 22px rgba(0,0,0,.08);
+
+      --g-xl:28px;
+      --g-lg:20px;
+      --g-md:14px;
+      --g-sm:10px;
+
+      --ease:180ms ease;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    /* Layout */
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:280px 1fr;
+    }
+
+    .sidebar{
+      background:var(--panel);
+      box-shadow:var(--shadow-soft);
+      padding:var(--g-xl) var(--g-lg);
+      display:flex;
+      flex-direction:column;
+      gap:var(--g-xl);
+      position:sticky;
+      top:0;
+      height:100vh;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .brand-badge{
+      width:44px;height:44px;border-radius:14px;
+      background:linear-gradient(135deg,var(--chestnut),var(--copper));
+      box-shadow:var(--shadow-soft);
+    }
+    .brand-title{
+      display:flex;flex-direction:column;line-height:1.05;
+    }
+    .brand-title b{font-size:14px}
+    .brand-title span{font-size:12px;color:var(--muted)}
+
+    .nav{
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .nav button{
+      all:unset;
+      cursor:pointer;
+      padding:12px 14px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      transition:var(--ease);
+      border:1px solid transparent;
+    }
+    .nav button:hover{background:rgba(229,209,164,.45)}
+    .nav button.active{
+      background:rgba(229,209,164,.65);
+      border-color:rgba(134,75,18,.25);
+    }
+    .nav .left{
+      display:flex;align-items:center;gap:10px;
+      font-size:13px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:var(--copper);
+      box-shadow:0 0 0 4px rgba(134,75,18,.10);
+    }
+    .badge{
+      font-size:12px;color:var(--muted);
+      background:rgba(0,0,0,.04);
+      border:1px solid var(--line);
+      padding:4px 8px;border-radius:999px;
+    }
+
+    .sidebar-footer{
+      margin-top:auto;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:12px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.02);
+    }
+    .avatar{
+      width:42px;height:42px;border-radius:50%;
+      background:linear-gradient(135deg,var(--desert),rgba(72,9,3,.25));
+      border:1px solid rgba(0,0,0,.08);
+    }
+    .who{display:flex;flex-direction:column;gap:2px}
+    .who b{font-size:13px}
+    .who span{font-size:12px;color:var(--muted)}
+
+    .main{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+    }
+
+    .topbar{
+      height:74px;
+      background:var(--panel);
+      box-shadow:var(--shadow-soft);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 var(--g-xl);
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .topbar h1{
+      font-size:16px;
+      font-weight:650;
+      letter-spacing:.2px;
+    }
+    .topbar small{display:block;color:var(--muted);font-weight:500;margin-top:2px}
+    .top-actions{display:flex;gap:10px;align-items:center}
+    .icon-btn{
+      width:42px;height:42px;border-radius:50%;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.03);
+      cursor:pointer;
+      transition:var(--ease);
+      display:grid;place-items:center;
+      user-select:none;
+    }
+    .icon-btn:hover{background:rgba(229,209,164,.55)}
+    .pill{
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.03);
+      padding:9px 12px;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .content{
+      padding:var(--g-xl);
+      display:flex;
+      flex-direction:column;
+      gap:var(--g-xl);
+      min-width:0;
+    }
+
+    /* Cards */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:var(--g-lg);
+      min-width:0;
+    }
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--r-xl);
+      box-shadow:var(--shadow);
+      padding:var(--g-lg);
+      min-width:0;
+    }
+    .card.soft{
+      box-shadow:var(--shadow-soft);
+    }
+    .card h2{
+      font-size:16px;
+      margin-bottom:6px;
+      font-weight:700;
+    }
+    .card p{color:var(--muted);font-size:13px}
+
+    .card-header{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+      margin-bottom:14px;
+    }
+    .subtle{
+      color:var(--muted);font-size:12px;
+    }
+
+    .btn{
+      border:none;
+      cursor:pointer;
+      transition:var(--ease);
+      font-family:inherit;
+      border-radius:14px;
+      padding:11px 14px;
+      font-weight:650;
+      font-size:13px;
+      user-select:none;
+    }
+    .btn.primary{
+      background:var(--chestnut);
+      color:#fff;
+      box-shadow:var(--shadow-soft);
+    }
+    .btn.primary:hover{transform:translateY(-1px);opacity:.95}
+    .btn.ghost{
+      background:rgba(0,0,0,.03);
+      border:1px solid var(--line);
+      color:var(--text);
+    }
+    .btn.ghost:hover{background:rgba(229,209,164,.55)}
+    .btn.danger{
+      background:var(--chestnut);
+      color:#fff;
+    }
+    .btn:disabled{
+      opacity:.55;cursor:not-allowed;transform:none !important;
+    }
+
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .row.space{justify-content:space-between}
+
+    .field{
+      display:flex;flex-direction:column;gap:6px;
+      min-width:180px;
+    }
+    label{font-size:12px;color:var(--muted);font-weight:600}
+    input, select, textarea{
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.02);
+      border-radius:14px;
+      padding:11px 12px;
+      font-size:13px;
+      outline:none;
+      transition:var(--ease);
+      font-family:inherit;
+    }
+    textarea{min-height:92px;resize:vertical}
+    input:focus, select:focus, textarea:focus{
+      border-color:rgba(134,75,18,.45);
+      box-shadow:0 0 0 4px rgba(134,75,18,.10);
+      background:#fff;
+    }
+
+    .table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0 10px;
+    }
+    .table th{
+      text-align:left;
+      font-size:12px;
+      color:var(--muted);
+      padding:0 10px 6px 10px;
+      font-weight:700;
+    }
+    .table td{
+      padding:12px 10px;
+      background:rgba(0,0,0,.02);
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      font-size:13px;
+      vertical-align:top;
+    }
+    .table tr td:first-child{
+      border-left:1px solid var(--line);
+      border-top-left-radius:14px;border-bottom-left-radius:14px;
+    }
+    .table tr td:last-child{
+      border-right:1px solid var(--line);
+      border-top-right-radius:14px;border-bottom-right-radius:14px;
+    }
+
+    .status{
+      padding:5px 9px;border-radius:999px;
+      border:1px solid var(--line);
+      font-size:12px;
+      display:inline-flex;align-items:center;gap:6px;
+      background:#fff;
+    }
+    .status i{
+      width:8px;height:8px;border-radius:50%;display:inline-block;
+      background:var(--copper);
+    }
+
+    .empty{
+      padding:44px;
+      text-align:center;
+      border:1px dashed rgba(0,0,0,.16);
+      border-radius:var(--r-xl);
+      background:rgba(229,209,164,.25);
+      color:var(--muted);
+    }
+
+    /* Floating chat */
+    .chat-fab{
+      position:fixed;
+      right:26px;bottom:26px;
+      width:64px;height:64px;border-radius:50%;
+      background:var(--chestnut);
+      color:#fff;
+      border:none;
+      cursor:pointer;
+      box-shadow:var(--shadow);
+      display:grid;place-items:center;
+      transition:var(--ease);
+      z-index:30;
+    }
+    .chat-fab:hover{transform:scale(1.05)}
+    .chat-fab small{display:block;font-size:10px;opacity:.9;margin-top:-2px}
+
+    /* Margin button + fireworks */
+    .margin-btn{
+      width:70px;height:70px;border-radius:50%;
+      background:var(--chestnut);
+      color:#fff;
+      border:none;
+      cursor:pointer;
+      box-shadow:var(--shadow);
+      transition:var(--ease);
+      display:grid;place-items:center;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .margin-btn:hover{transform:scale(1.08)}
+    .fireworks{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:999;
+    }
+
+    /* Modal */
+    .modal-backdrop{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.35);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:200;
+      padding:20px;
+    }
+    .modal{
+      width:min(860px, 100%);
+      background:var(--panel);
+      border-radius:var(--r-xl);
+      border:1px solid rgba(255,255,255,.25);
+      box-shadow:0 20px 70px rgba(0,0,0,.35);
+      padding:18px;
+      max-height:80vh;
+      overflow:auto;
+    }
+    .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .modal-head b{font-size:14px}
+    .close-x{
+      width:42px;height:42px;border-radius:50%;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.03);
+      cursor:pointer;
+    }
+
+    /* Toast */
+    .toast{
+      position:fixed;
+      left:50%;top:18px;
+      transform:translateX(-50%);
+      background:rgba(255,255,255,.95);
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:10px 14px;
+      box-shadow:var(--shadow-soft);
+      display:none;
+      z-index:300;
+      font-size:13px;
+      color:var(--text);
+      gap:10px;align-items:center;
+    }
+
+    /* Print (PDF) look */
+    @media print{
+      .sidebar,.topbar,.chat-fab,.toast,.modal-backdrop{display:none !important}
+      .content{padding:0}
+      .card{box-shadow:none;border:1px solid #ddd}
+      body{background:#fff}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="toast" id="toast"></div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" id="modal">
+      <div class="modal-head">
+        <b id="modalTitle">Окно</b>
+        <button class="close-x" id="modalClose">×</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <canvas class="fireworks" id="fireworks"></canvas>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge"></div>
+        <div class="brand-title">
+          <b>Revolution Print</b>
+          <span>Internal Platform (MVP)</span>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav">
+        <!-- buttons injected -->
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="avatar"></div>
+        <div class="who">
+          <b id="whoName">—</b>
+          <span id="whoRole">—</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div>
+          <h1 id="topTitle">Главная</h1>
+          <small id="topSub">Рабочее пространство</small>
+        </div>
+
+        <div class="top-actions">
+          <div class="pill" id="presencePill">В системе: 0м</div>
+          <button class="icon-btn" id="btnNotif" title="Уведомления">🔔</button>
+          <button class="icon-btn" id="btnProfile" title="Личный кабинет">👤</button>
+        </div>
+      </header>
+
+      <div class="content" id="content">
+        <!-- pages render here -->
+      </div>
+    </div>
+  </div>
+
+  <button class="chat-fab" id="fabChat" title="Открыть чат">
+    <small>Чат</small>
+  </button>
+
+  <script>
+    /******************************************************************
+     *  Revolution Print Platform — One-file MVP
+     *  Всё сохраняется в localStorage.
+     ******************************************************************/
+
+    const LS_KEY = "rp_platform_mvp_v1";
+
+    const NAV = [
+      { id:"dashboard", title:"Главная", subtitle:"7 разделов и быстрые переходы" },
+      { id:"calculator", title:"Калькулятор DTF", subtitle:"Расчёт стоимости + маржа" },
+      { id:"documents", title:"Документы", subtitle:"КП / сметы / акты / экспорт" },
+      { id:"chat", title:"Чат", subtitle:"Сообщения + файлы + привязка" },
+      { id:"production", title:"Производство", subtitle:"Компании и условия сотрудничества" },
+      { id:"clients", title:"Клиенты", subtitle:"Статусы, звонки, ответственность" },
+      { id:"orders", title:"Заказы", subtitle:"Жизненный цикл заказа" },
+      { id:"kp", title:"Создание документов", subtitle:"КП / смета / акт по ГОСТ" },
+      { id:"admin", title:"Админка", subtitle:"Сотрудники, роли, контроль времени" },
+      { id:"profile", title:"Личный кабинет", subtitle:"Профиль и статистика" },
+    ];
+
+    const ROLE_LABELS = {
+      admin:"Администратор",
+      manager:"Менеджер продаж",
+      production:"Производство",
+      owner:"Руководитель",
+      partner:"Партнёр",
+      pm:"PM",
+      dev:"Разработчик"
+    };
+
+    // ---------- State ----------
+    function defaultState(){
+      const now = Date.now();
+      return {
+        app: { page:"dashboard", startedAt: now, lastActiveAt: now },
+        user: { id:1, fullName:"Иван Иванов", role:"manager", email:"ivan@revolutionprint.local" },
+
+        notifications: [
+          { id: 1, text: "Платформа запущена (MVP).", at: now }
+        ],
+
+        clients: [
+          { id: 101, name:"ООО Ромашка", status:"Новый", owner:null, firstCall:null, lastCall:null, comment:"", createdAt: now },
+          { id: 102, name:"ИП Соколова", status:"Ожидании", owner:"Пётр Петров", firstCall:now-86400000*2, lastCall:now-86400000, comment:"Ждёт КП", createdAt: now-86400000*5 }
+        ],
+
+        orders: [
+          { id: 201, clientId: 102, title:"DTF перенос (10 шт)", status:"Ожидании", createdAt: now-86400000*2, note:"Клиент думает" }
+        ],
+
+        productionCompanies: [
+          { id: 301, name:"RP In-house", info:"Внутреннее производство", cooperation:"Собственное", createdAt: now-86400000*30 }
+        ],
+
+        chat: {
+          messages: [
+            { id: 1, type:"system", user:"Система", text:"Добро пожаловать в Revolution Print Platform.", at: now-200000, files:[], link:null },
+            { id: 2, type:"user", user:"Иван Иванов", text:"Принял, работаем.", at: now-150000, files:[], link:null },
+          ]
+        },
+
+        calculator: {
+          items: [
+            { id:1, width:30, height:20, qty:10, sides:"1", complexity:"Лёгкий" }
+          ],
+          marginPct: 20
+        },
+
+        documents: [
+          { id: 401, type:"КП", title:"КП шаблон", createdAt: now-86400000*10, content: "Коммерческое предложение (шаблон)." }
+        ],
+
+        users: [
+          { id:1, fullName:"Иван Иванов", role:"manager", email:"ivan@revolutionprint.local", password:"••••••••", active:true },
+          { id:2, fullName:"Пётр Петров", role:"manager", email:"petr@revolutionprint.local", password:"••••••••", active:true },
+          { id:3, fullName:"Михаил (owner)", role:"owner", email:"mikhail@revolutionprint.local", password:"••••••••", active:true },
+          { id:4, fullName:"Админ", role:"admin", email:"admin@revolutionprint.local", password:"••••••••", active:true }
+        ],
+
+        stats: {
+          // история действий по пользователю (для личного кабинета)
+          activity: [
+            { id: 1, userId: 1, at: now-3600000*10, text: "Открыл платформу" },
+            { id: 2, userId: 1, at: now-3600000*2, text: "Просмотрел клиентов" }
+          ]
+        },
+
+        kpEditor: {
+          blocks: [
+            { id:"b1", title:"Шапка", text:"Revolution Print • Коммерческое предложение" },
+            { id:"b2", title:"Реквизиты", text:"ИНН/КПП/Адрес/Контакты" },
+            { id:"b3", title:"Список позиций", text:"Позиция 1 • DTF перенос • Кол-во • Цена" },
+            { id:"b4", title:"Итог и сроки", text:"Итого: … ₽ • Срок: …" },
+            { id:"b5", title:"Условия по ГОСТ", text:"Условия оплаты/поставки/гарантии (ГОСТ-стиль)" }
+          ]
+        }
+      };
+    }
+
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        if(!raw) return defaultState();
+        const s = JSON.parse(raw);
+        // минимальная «миграция»
+        if(!s.app || !s.user) return defaultState();
+        return s;
+      } catch {
+        return defaultState();
+      }
+    }
+
+    function saveState(){
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+    }
+
+    const state = loadState();
+
+    // ---------- Utils ----------
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    function fmtDateTime(ts){
+      const d = new Date(ts);
+      return d.toLocaleString();
+    }
+    function fmtDate(ts){
+      if(!ts) return "—";
+      const d = new Date(ts);
+      return d.toLocaleDateString();
+    }
+    function toast(text){
+      const t = $("#toast");
+      t.style.display = "flex";
+      t.textContent = text;
+      setTimeout(()=>{ t.style.display="none"; }, 1800);
+    }
+    function logActivity(text){
+      state.stats.activity.unshift({
+        id: Date.now(),
+        userId: state.user.id,
+        at: Date.now(),
+        text
+      });
+      saveState();
+    }
+
+    // ---------- Modal ----------
+    function openModal(title, html){
+      $("#modalTitle").textContent = title;
+      $("#modalBody").innerHTML = html;
+      $("#modalBackdrop").style.display = "flex";
+    }
+    function closeModal(){
+      $("#modalBackdrop").style.display = "none";
+      $("#modalBody").innerHTML = "";
+    }
+    $("#modalClose").addEventListener("click", closeModal);
+    $("#modalBackdrop").addEventListener("click", (e)=>{
+      if(e.target.id==="modalBackdrop") closeModal();
+    });
+
+    // ---------- Navigation ----------
+    function renderNav(){
+      const nav = $("#nav");
+      nav.innerHTML = NAV.map(item => `
+        <button data-page="${item.id}" class="${state.app.page===item.id?'active':''}">
+          <span class="left"><span class="dot"></span>${item.title}</span>
+          <span class="badge">›</span>
+        </button>
+      `).join("");
+
+      $$("#nav button").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          go(btn.dataset.page);
+        });
+      });
+    }
+
+    function go(page){
+      state.app.page = page;
+      state.app.lastActiveAt = Date.now();
+      saveState();
+      render();
+    }
+
+    // ---------- Presence timer ----------
+    function updatePresence(){
+      const ms = Date.now() - state.app.startedAt;
+      const min = Math.floor(ms/60000);
+      $("#presencePill").textContent = `В системе: ${min}м`;
+      // для админки — фиксируем только время, без лишней записи
+      saveState();
+    }
+
+    setInterval(updatePresence, 60000);
+    updatePresence();
+
+    // ---------- Top buttons ----------
+    $("#btnNotif").addEventListener("click", ()=>{
+      const items = state.notifications
+        .slice(0,20)
+        .map(n=>`<div class="chat-message"><b></b> ${n.text}<div class="subtle">${fmtDateTime(n.at)}</div></div>`)
+        .join("") || `<div class="empty">Уведомлений пока нет</div>`;
+      openModal("Уведомления", items);
+      logActivity("Открыл уведомления");
+    });
+
+    $("#btnProfile").addEventListener("click", ()=>go("profile"));
+    $("#fabChat").addEventListener("click", ()=>go("chat"));
+
+    // ---------- Fireworks (simple particles) ----------
+    const fw = $("#fireworks");
+    const fwCtx = fw.getContext("2d");
+    let particles = [];
+    function resizeFW(){
+      fw.width = window.innerWidth;
+      fw.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeFW);
+    resizeFW();
+
+    function launchFireworks(anchorEl){
+  // Целим "вокруг кнопки": центрируем по элементу (если есть)
+  let cx = window.innerWidth * 0.75;
+  let cy = window.innerHeight * 0.75;
+
+  if(anchorEl && anchorEl.getBoundingClientRect){
+    const r = anchorEl.getBoundingClientRect();
+    cx = r.left + r.width/2;
+    cy = r.top + r.height/2;
+  }
+
+  for(let i=0;i<160;i++){
+    const a = Math.random()*Math.PI*2;
+    const sp = 2 + Math.random()*6;
+    particles.push({
+      x: cx, y: cy,
+      vx: Math.cos(a)*sp,
+      vy: Math.sin(a)*sp,
+      life: 60 + Math.random()*40,
+      r: 2 + Math.random()*3,
+      c: Math.random()<0.6 ? "rgba(134,75,18,.9)" : "rgba(72,9,3,.9)"
+    });
+  }
+  animateFW();
+}
+    let fwAnimating = false;
+    function animateFW(){
+      if(fwAnimating) return;
+      fwAnimating = true;
+
+      const tick = ()=>{
+        fwCtx.clearRect(0,0,fw.width,fw.height);
+        particles.forEach(p=>{
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.08; // gravity
+          p.life -= 1;
+
+          fwCtx.beginPath();
+          fwCtx.fillStyle = p.c;
+          fwCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+          fwCtx.fill();
+        });
+
+        particles = particles.filter(p=>p.life>0);
+
+        if(particles.length>0){
+          requestAnimationFrame(tick);
+        } else {
+          fwCtx.clearRect(0,0,fw.width,fw.height);
+          fwAnimating = false;
+        }
+      };
+      requestAnimationFrame(tick);
+    }
+
+    // ---------- Pages ----------
+    function setTop(title, sub){
+      $("#topTitle").textContent = title;
+      $("#topSub").textContent = sub;
+    }
+
+    function render(){
+      renderNav();
+
+      $("#whoName").textContent = state.user.fullName;
+      $("#whoRole").textContent = ROLE_LABELS[state.user.role] || state.user.role;
+
+      const page = NAV.find(n=>n.id===state.app.page) || NAV[0];
+      setTop(page.title, page.subtitle);
+
+      const content = $("#content");
+      const p = state.app.page;
+
+      if(p==="dashboard") content.innerHTML = pageDashboard();
+      else if(p==="calculator") content.innerHTML = pageCalculator();
+      else if(p==="clients") content.innerHTML = pageClients();
+      else if(p==="orders") content.innerHTML = pageOrders();
+      else if(p==="production") content.innerHTML = pageProduction();
+      else if(p==="documents") content.innerHTML = pageDocuments();
+      else if(p==="kp") content.innerHTML = pageKPEditor();
+      else if(p==="chat") content.innerHTML = pageChat();
+      else if(p==="admin") content.innerHTML = pageAdmin();
+      else if(p==="profile") content.innerHTML = pageProfile();
+      else content.innerHTML = `<div class="card"><h2>Раздел в разработке</h2><p>Скоро будет.</p></div>`;
+
+      // bind page events
+      bindPageEvents(p);
+    }
+
+    // --- Dashboard ---
+    function pageDashboard(){
+      const counters = {
+        clients: state.clients.length,
+        orders: state.orders.length,
+        prod: state.productionCompanies.length,
+        docs: state.documents.length
+      };
+
+      return `
+        <div class="grid">
+          <div class="card soft" style="grid-column: span 12;">
+            <div class="card-header">
+              <div>
+                <h2>Главная панель</h2>
+                <p>Быстрый доступ к ключевым разделам. Платформа может быть «пустой» — это нормально.</p>
+              </div>
+              <div class="row">
+                <span class="status"><i></i>${ROLE_LABELS[state.user.role] || state.user.role}</span>
+                <button class="btn ghost" id="btnReset">Сбросить данные</button>
+              </div>
+            </div>
+
+            <div class="row" style="gap:10px;flex-wrap:wrap">
+              <span class="pill">Клиентов: <b>${counters.clients}</b></span>
+              <span class="pill">Заказов: <b>${counters.orders}</b></span>
+              <span class="pill">Производств: <b>${counters.prod}</b></span>
+              <span class="pill">Документов: <b>${counters.docs}</b></span>
+            </div>
+          </div>
+
+          ${dashCard("Калькулятор DTF","Быстрый расчёт + маржа","calculator")}
+          ${dashCard("Документы","КП/сметы/акты/экспорт","documents")}
+          ${dashCard("Чат","Коммуникации и файлы","chat")}
+          ${dashCard("Производство","Компании и условия","production")}
+          ${dashCard("Клиенты","Статусы, звонки, ответственность","clients")}
+          ${dashCard("Заказы","Статусы и сроки","orders")}
+          ${dashCard("Админка","Пользователи и контроль","admin")}
+        </div>
+      `;
+    }
+    function dashCard(title, desc, page){
+      return `
+        <div class="card" style="grid-column: span 4;">
+          <div class="card-header">
+            <div>
+              <h2>${title}</h2>
+              <p>${desc}</p>
+            </div>
+            <button class="btn primary" data-go="${page}">Открыть</button>
+          </div>
+          <div class="subtle">Нажми «Открыть» или выбери раздел слева.</div>
+        </div>
+      `;
+    }
+
+    // --- Calculator DTF ---
+    function pageCalculator(){
+      const items = state.calculator.items || [];
+      const margin = Number(state.calculator.marginPct || 0);
+
+      return `
+        <div class="grid">
+          <div class="card" style="grid-column: span 7;">
+            <div class="card-header">
+              <div>
+                <h2>Калькулятор DTF</h2>
+                <p>Несколько позиций в одном расчёте. Это MVP — формулы упрощены, но логика и структура настоящие.</p>
+              </div>
+              <button class="btn ghost" id="btnAddCalcItem">+ Позиция</button>
+            </div>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Ширина/высота</th>
+                  <th>Кол-во</th>
+                  <th>Стороны</th>
+                  <th>Сложность</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${items.length ? items.map(rowCalcItem).join("") : `
+                  <tr><td colspan="5"><div class="empty">Пока нет позиций. Нажми «+ Позиция».</div></td></tr>
+                `}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card" style="grid-column: span 5;">
+            <div class="card-header">
+              <div>
+                <h2>Итог</h2>
+                <p>Маржа применяется к итоговой цене.</p>
+              </div>
+              <button class="margin-btn" id="btnMargin">Маржа</button>
+            </div>
+
+            <div class="row space" style="margin-top:10px">
+              <div class="pill">Маржа: <b id="marginLabel">${margin}%</b></div>
+              <button class="btn primary" id="btnCalcTotal">Рассчитать</button>
+            </div>
+
+            <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+              <div class="chat-message">
+                <b>Себестоимость:</b> <span id="costLabel">—</span>
+                <div class="subtle">Упрощённо: площадь * коэффициент * кол-во</div>
+              </div>
+              <div class="chat-message">
+                <b>Итого с маржой:</b> <span id="totalLabel">—</span>
+                <div class="subtle">Показано для понимания процесса.</div>
+              </div>
+            </div>
+
+            <div style="margin-top:14px" class="row">
+              <button class="btn ghost" id="btnSaveToOrder">Сохранить как заказ</button>
+              <button class="btn ghost" id="btnSaveToDoc">Сохранить в документ</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    function rowCalcItem(it){
+      return `
+        <tr>
+          <td>
+            <div class="row">
+              <input style="width:92px" type="number" min="1" value="${it.width}" data-calc="width" data-id="${it.id}" />
+              <input style="width:92px" type="number" min="1" value="${it.height}" data-calc="height" data-id="${it.id}" />
+              <span class="subtle">см</span>
+            </div>
+          </td>
+          <td><input style="width:110px" type="number" min="1" value="${it.qty}" data-calc="qty" data-id="${it.id}" /></td>
+          <td>
+            <select data-calc="sides" data-id="${it.id}">
+              <option ${it.sides==="1"?"selected":""} value="1">1 сторона</option>
+              <option ${it.sides==="2"?"selected":""} value="2">2 стороны</option>
+            </select>
+          </td>
+          <td>
+            <select data-calc="complexity" data-id="${it.id}">
+              <option ${it.complexity==="Лёгкий"?"selected":""}>Лёгкий</option>
+              <option ${it.complexity==="Сложный"?"selected":""}>Сложный</option>
+            </select>
+          </td>
+          <td style="text-align:right">
+            <button class="btn ghost" data-del-calc="${it.id}">Удалить</button>
+          </td>
+        </tr>
+      `;
+    }
+
+    // --- Clients ---
+    function pageClients(){
+      const rows = state.clients.slice().sort((a,b)=>b.createdAt-a.createdAt);
+      return `
+        <div class="grid">
+          <div class="card" style="grid-column: span 12;">
+            <div class="card-header">
+              <div>
+                <h2>Клиенты</h2>
+                <p>«Взять клиента» блокирует других менеджеров. Действие фиксируется системным сообщением в чате.</p>
+              </div>
+              <div class="row">
+                <button class="btn ghost" id="btnNewClient">+ Новый клиент</button>
+              </div>
+            </div>
+
+            ${rows.length ? `
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Клиент</th>
+                    <th>Статус</th>
+                    <th>Звонки</th>
+                    <th>Комментарий</th>
+                    <th>Ответственный</th>
+                    <th>Создан</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows.map(rowClient).join("")}
+                </tbody>
+              </table>
+            ` : `<div class="empty">Клиентов пока нет. Нажми «+ Новый клиент».</div>`}
+          </div>
+        </div>
+      `;
+    }
+    function rowClient(c){
+  const taken = !!c.owner;
+  return `
+    <tr>
+      <td class="subtle">${c.id}</td>
+      <td>
+        <b>${escapeHtml(c.name)}</b>
+      </td>
+      <td>
+        <select data-client-status="${c.id}">
+          ${["Новый","В работе","Ожидании","Отказ","Закрыт"].map(s=>`<option ${c.status===s?"selected":""}>${s}</option>`).join("")}
+        </select>
+      </td>
+      <td>
+        <div class="subtle">1й: ${fmtDate(c.firstCall)}</div>
+        <div class="subtle">посл: ${fmtDate(c.lastCall)}</div>
+        <button class="btn ghost" data-client-calls="${c.id}">Обновить</button>
+      </td>
+      <td style="max-width:260px">${escapeHtml(c.comment || "")}</td>
+      <td>
+        ${taken ? `<span class="status"><i></i>${escapeHtml(c.owner)}</span>` : `<span class="subtle">Не назначен</span>`}
+      </td>
+      <td class="subtle">${fmtDateTime(c.createdAt)}</td>
+      <td style="text-align:right">
+        ${taken
+          ? `<button class="btn ghost" data-client-take="${c.id}" disabled>Клиент занят</button>`
+          : `<button class="btn primary" data-client-take="${c.id}">Взять клиента</button>`
+        }
+        <button class="btn ghost" data-client-edit="${c.id}">Карточка</button>
+      </td>
+    </tr>
+  `;
+}
+
+    // --- Orders ---
+    function pageOrders(){
+      const rows = state.orders.slice().sort((a,b)=>b.createdAt-a.createdAt);
+      return `
+        <div class="grid">
+          <div class="card" style="grid-column: span 12;">
+            <div class="card-header">
+              <div>
+                <h2>Заказы</h2>
+                <p>Статусы: Обработка / В работе / Готов / Отменен / Ожидании.</p>
+              </div>
+              <button class="btn ghost" id="btnNewOrder">+ Новый заказ</button>
+            </div>
+
+            ${rows.length ? `
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Заказ</th>
+                    <th>Клиент</th>
+                    <th>Статус</th>
+                    <th>Создан</th>
+                    <th>Комментарий</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows.map(rowOrder).join("")}
+                </tbody>
+              </table>
+            ` : `<div class="empty">Заказов пока нет. Нажми «+ Новый заказ».</div>`}
+          </div>
+        </div>
+      `;
+    }
+    function rowOrder(o){
+  const client = state.clients.find(c=>c.id===o.clientId);
+  const clientName = client ? client.name : "—";
+  const statuses = ["Обработка","В работе","Готов","Отменен","Ожидании"];
+  return `
+    <tr>
+      <td class="subtle">${o.id}</td>
+      <td><b>${escapeHtml(o.title)}</b></td>
+      <td>${escapeHtml(clientName)}</td>
+      <td>
+        <select data-order-status="${o.id}">
+          ${statuses.map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}
+        </select>
+      </td>
+      <td class="subtle">${fmtDateTime(o.createdAt)}</td>
+      <td style="max-width:320px">${escapeHtml(o.note || "")}</td>
+      <td style="text-align:right">
+        <button class="btn ghost" data-order-edit="${o.id}">Открыть</button>
+      </td>
+    </tr>
+  `;
+}
+
+    // --- Production ---
+    function pageProduction(){
+      const rows = state.productionCompanies.slice().sort((a,b)=>b.createdAt-a.createdAt);
+      return `
+        <div class="grid">
+          <div class="card" style="grid-column: span 12;">
+            <div class="card-header">
+              <div>
+                <h2>Производство</h2>
+                <p>Добавляй компании, информацию и формат сотрудничества.</p>
+              </div>
+              <button class="btn ghost" id="btnNewProd">+ Добавить компанию</button>
+            </div>
+
+            ${rows.length ? `
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Компания</th>
+                    <th>Информация</th>
+                    <th>Формат сотрудничества</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows.map(p=>`
+                    <tr>
+                      <td><b>${escapeHtml(p.name)}</b><div class="subtle">${fmtDate(p.createdAt)}</div></td>
+                      <td>${escapeHtml(p.info)}</td>
+                      <td>${escapeHtml(p.cooperation)}</td>
+                      <td style="text-align:right"><button class="btn ghost" data-prod-edit="${p.id}">Карточка</button></td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            ` : `<div class="empty">Пока нет компаний. Нажми «+ Добавить компанию».</div>`}
+          </div>
+        </div>
+      `;
+    }
+
+    // --- Documents ---
+    function pageDocuments(){
+      const rows = state.documents.slice().sort((a,b)=>b.createdAt-a.createdAt);
+      return `
+        <div class="grid">
+          <div class="card" style="grid-column: span 12;">
+            <div class="card-header">
+              <div>
+                <h2>Документы</h2>
+                <p>Смета, акт приёма и т.д. Экспорт: Word / Excel / PDF (print).</p>
+              </div>
+              <button class="btn ghost" id="btnNewDoc">+ Новый документ</button>
+            </div>
+
+            ${rows.length ? `
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Тип</th>
+                    <th>Название</th>
+                    <th>Дата</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows.map(d=>`
+                    <tr>
+                      <td><span class="status"><i></i>${escapeHtml(d.type)}</span></td>
+                      <td><b>${escapeHtml(d.title)}</b></td>
+                      <td class="subtle">${fmtDateTime(d.createdAt)}</td>
+                      <td style="text-align:right">
+                        <button class="btn ghost" data-doc-open="${d.id}">Открыть</button>
+                        <button class="btn ghost" data-doc-word="${d.id}">Word</button>
+                        <button class="btn ghost" data-doc-excel="${d.id}">Excel</button>
+                        <button class="btn ghost" data-doc-pdf="${d.id}">PDF</button>
+                      </td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            ` : `<div class="empty">Документов пока нет. Нажми «+ Новый документ».</div>`}
+          </div>
+        </div>
+      `;
+    }
+
+    // --- KP editor ---
+    function pageKPEditor(){
+  // Официальное создание документов (КП/Смета/Акт). Без ручного форматирования блоков.
+  const orders = state.orders.slice().sort((a,b)=>b.createdAt-a.createdAt);
+  const clients = state.clients.slice().sort((a,b)=>b.createdAt-a.createdAt);
+
+  return `
+    <div class="grid">
+      <div class="card" style="grid-column: span 12;">
+        <div class="card-header">
+          <div>
+            <h2>Создание документов</h2>
+            <p>КП / смета / акт по официальному шаблону (ГОСТ-стиль). Данные вводятся в форме, документ собирается автоматически.</p>
+          </div>
+          <div class="row">
+            <button class="btn primary" id="btnDocCreate">Создать документ</button>
+            <button class="btn ghost" id="btnDocToDocs">Сохранить в «Документы»</button>
+          </div>
+        </div>
+
+        <div class="row" style="align-items:flex-end">
+          <div class="field" style="min-width:220px">
+            <label>Тип документа</label>
+            <select id="docGenType">
+              <option value="КП">КП</option>
+              <option value="Смета">Смета</option>
+              <option value="Акт">Акт</option>
+            </select>
+          </div>
+
+          <div class="field" style="flex:1;min-width:260px">
+            <label>Компания заказчика (обязательно)</label>
+            <input id="docGenClient" placeholder="Например: ООО Ромашка" />
+          </div>
+
+          <div class="field" style="min-width:260px">
+            <label>Заказ (опционально)</label>
+            <select id="docGenOrder">
+              <option value="">Без заказа</option>
+              ${orders.map(o=>`<option value="${o.id}">#${o.id}: ${escapeHtml(o.title)}</option>`).join("")}
+            </select>
+          </div>
+
+          <div class="field" style="min-width:220px">
+            <label>Сумма, ₽ (можно автозаполнить из заказа)</label>
+            <input id="docGenSum" type="number" min="0" placeholder="Например: 15000" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field" style="min-width:260px;flex:1">
+            <label>Сроки выполнения</label>
+            <input id="docGenTerms" placeholder="Например: 3 рабочих дня" />
+          </div>
+          <div class="field" style="min-width:260px;flex:1">
+            <label>Условия оплаты</label>
+            <input id="docGenPayment" placeholder="Например: 100% предоплата по счёту" />
+          </div>
+          <div class="field" style="min-width:260px;flex:1">
+            <label>Подписант</label>
+            <input id="docGenSigner" placeholder="Например: Генеральный директор Иванов И.И." />
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:6px">
+          <label>Спецификация / комментарий</label>
+          <textarea id="docGenSpec" placeholder="Перечень позиций, требования, примечания..."></textarea>
+        </div>
+
+        <div class="card soft" style="margin-top:14px">
+          <div class="card-header">
+            <div>
+              <h2 style="margin:0">Предпросмотр</h2>
+              <p>Текст документа, который будет сохранён / экспортирован.</p>
+            </div>
+            <div class="row">
+              <button class="btn ghost" id="btnDocWord">Word</button>
+              <button class="btn ghost" id="btnDocExcel">Excel</button>
+              <button class="btn ghost" id="btnDocPDF">PDF (только КП)</button>
+            </div>
+          </div>
+          <div class="chat-message" id="docGenPreview" style="white-space:pre-wrap;background:rgba(229,209,164,.28)">—</div>
+        </div>
+
+        <div class="subtle" style="margin-top:10px">
+          Примечание: PDF экспорт доступен только для КП (официальное требование).
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+    function buildKPText(){
+      return state.kpEditor.blocks.map(b=>`${b.title}\n${b.text}\n`).join("\n");
+    }
+
+    // ---------- Document generator (official templates) ----------
+    function buildOfficialDocText({type, title, date, client, order, sum, terms, pay, signer, spec}){
+      const orderLine = order ? `Основание: Заказ #${order.id} — ${order.title}` : "Основание: —";
+      const sumLine = (sum && sum>0) ? `${sum.toLocaleString()} ₽` : "—";
+
+      if(type==="Смета"){
+        return [
+          "СМЕТА",
+          "",
+          `Дата: ${date}`,
+          `Заказчик: ${client}`,
+          orderLine,
+          "",
+          "1. Состав работ / материалов:",
+          spec ? spec : "—",
+          "",
+          `2. Договорная стоимость: ${sumLine}`,
+          terms ? `3. Сроки: ${terms}` : "3. Сроки: —",
+          pay ? `4. Условия оплаты: ${pay}` : "4. Условия оплаты: —",
+          "",
+          `Подписант: ${signer || "____________________"}`,
+          ""
+        ].join("\n");
+      }
+
+      if(type==="Акт"){
+        return [
+          "АКТ ВЫПОЛНЕННЫХ РАБОТ",
+          "",
+          `Дата: ${date}`,
+          `Заказчик: ${client}`,
+          orderLine,
+          "",
+          "Стороны подтверждают, что работы/услуги выполнены и приняты без замечаний:",
+          spec ? spec : "—",
+          "",
+          `Стоимость работ/услуг: ${sumLine}`,
+          "",
+          `Подписант: ${signer || "____________________"}`,
+          ""
+        ].join("\n");
+      }
+
+      // Default: КП
+      return [
+        "КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ",
+        "",
+        `Дата: ${date}`,
+        "",
+        "Исполнитель: Revolution Print",
+        `Заказчик: ${client}`,
+        orderLine,
+        "",
+        "Предмет предложения:",
+        "Изготовление продукции и/или выполнение работ согласно спецификации.",
+        "",
+        "Спецификация:",
+        spec ? spec : "—",
+        "",
+        `Стоимость: ${sumLine}`,
+        terms ? `Сроки выполнения: ${terms}` : "Сроки выполнения: —",
+        pay ? `Условия оплаты: ${pay}` : "Условия оплаты: —",
+        "",
+        "Настоящее предложение действительно на дату составления.",
+        "",
+        `Подписант: ${signer || "____________________"}`,
+        ""
+      ].join("\n");
+    }
+
+// --- Chat ---
+    function pageChat(){
+      return `
+        <div class="grid">
+          <div class="card" style="grid-column: span 8;">
+            <div class="card-header">
+              <div>
+                <h2>Чат</h2>
+                <p>Сообщения не удаляются. ФИО + дата. Можно прикрепить файлы (≤75MB/файл, ≤20 файлов).</p>
+              </div>
+              <button class="btn ghost" id="btnChatHelp">Правила</button>
+            </div>
+
+            <div id="chatList" style="display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow:auto;padding-right:6px">
+              ${state.chat.messages.map(renderMsg).join("")}
+            </div>
+
+            <div style="margin-top:14px;border-top:1px solid var(--line);padding-top:14px">
+              <div class="row">
+                <div class="field" style="flex:1;min-width:240px">
+                  <label>Сообщение</label>
+                  <input id="chatText" placeholder="Напиши сообщение..." />
+                </div>
+
+                <div class="field" style="min-width:220px">
+                  <label>Привязка</label>
+                  <select id="chatLink">
+                    <option value="">Без привязки</option>
+                    <optgroup label="Клиенты">
+                      ${state.clients.map(c=>`<option value="client:${c.id}">Клиент: ${escapeHtml(c.name)}</option>`).join("")}
+                    </optgroup>
+                    <optgroup label="Заказы">
+                      ${state.orders.map(o=>`<option value="order:${o.id}">Заказ #${o.id}: ${escapeHtml(o.title)}</option>`).join("")}
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row" style="margin-top:10px">
+                <div class="field" style="flex:1;min-width:260px">
+                  <label>Файлы (до 20 / не более 75MB каждый)</label>
+                  <input id="chatFiles" type="file" multiple />
+                </div>
+                <button class="btn primary" id="btnSend">Отправить</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="grid-column: span 4;">
+            <div class="card-header">
+              <div>
+                <h2>Быстрые действия</h2>
+                <p>Системные события и навигация.</p>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <button class="btn ghost" data-go="clients">Открыть клиентов</button>
+              <button class="btn ghost" data-go="orders">Открыть заказы</button>
+              <button class="btn ghost" id="btnPostSystem">Системное сообщение</button>
+            </div>
+
+            <div style="margin-top:14px" class="chat-message">
+              <b>Подсказка:</b>
+              <div class="subtle">При «взять клиента» система сама пишет в чат.</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMsg(m){
+      const fileInfo = (m.files && m.files.length)
+        ? `<div class="subtle"> файлов: ${m.files.length}</div>`
+        : "";
+      const link = m.link ? `<div class="subtle"> ${escapeHtml(m.link)}</div>` : "";
+      return `
+        <div class="chat-message">
+          <div class="row space">
+            <b>${escapeHtml(m.user)}</b>
+            <span class="subtle">${fmtDateTime(m.at)}</span>
+          </div>
+          <div style="margin-top:6px">${escapeHtml(m.text)}</div>
+          ${link}
+          ${fileInfo}
+        </div>
+      `;
+    }
+
+    // --- Admin ---
+    function pageAdmin(){
+      return `
+        <div class="grid">
+          <div class="card" style="grid-column: span 12;">
+            <div class="card-header">
+              <div>
+                <h2>Админка</h2>
+                <p>Сотрудники, роли, данные, контроль времени в системе.</p>
+              </div>
+              <div class="row">
+                <button class="btn ghost" id="btnAddUser">+ Добавить сотрудника</button>
+                <button class="btn ghost" id="btnSwitchRole">Сменить роль (для теста)</button>
+              </div>
+            </div>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ФИО</th>
+                  <th>Роль</th>
+                  <th>Email</th>
+                  <th>Активен</th>
+                  <th>В системе</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${state.users.map(u=>`
+                  <tr>
+                    <td><b>${escapeHtml(u.fullName)}</b></td>
+                    <td>${ROLE_LABELS[u.role] || u.role}</td>
+                    <td>${escapeHtml(u.email)}</td>
+                    <td>${u.active ? "✓" : "✕"}</td>
+                    <td>${Math.floor((Date.now()-state.app.startedAt)/60000)}м</td>
+                    <td style="text-align:right">
+                      <button class="btn ghost" data-user-open="${u.id}">Карточка</button>
+                    </td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+
+            <div class="subtle" style="margin-top:10px">
+              В MVP «пароли» скрыты. В реальном проекте пароли хранятся только хэшами на сервере.
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // --- Profile ---
+    function pageProfile(){
+      const mine = state.stats.activity.filter(a=>a.userId===state.user.id);
+      return `
+        <div class="grid">
+          <div class="card" style="grid-column: span 5;">
+            <div class="card-header">
+              <div>
+                <h2>Личный кабинет</h2>
+                <p>Профиль и настройки интерфейса.</p>
+              </div>
+            </div>
+
+            <div class="field" style="margin-top:6px">
+              <label>ФИО</label>
+              <input id="profileName" value="${escapeHtml(state.user.fullName)}" />
+            </div>
+
+            <div class="field" style="margin-top:10px">
+              <label>Роль</label>
+              <select id="profileRole">
+                ${Object.keys(ROLE_LABELS).map(r=>`<option value="${r}" ${state.user.role===r?"selected":""}>${ROLE_LABELS[r]}</option>`).join("")}
+              </select>
+            </div>
+
+            <div class="row" style="margin-top:14px">
+              <button class="btn primary" id="btnSaveProfile">Сохранить</button>
+              <button class="btn ghost" id="btnClearActivity">Очистить статистику</button>
+            </div>
+          </div>
+
+          <div class="card" style="grid-column: span 7;">
+            <div class="card-header">
+              <div>
+                <h2>Статистика работы</h2>
+                <p>Линейный список действий по времени (MVP).</p>
+              </div>
+            </div>
+
+            ${mine.length ? `
+              <div style="display:flex;flex-direction:column;gap:10px">
+                ${mine.slice(0,60).map(a=>`
+                  <div class="chat-message">
+                    <b>${escapeHtml(a.text)}</b>
+                    <div class="subtle">${fmtDateTime(a.at)}</div>
+                  </div>
+                `).join("")}
+              </div>
+            ` : `<div class="empty">Пока нет событий. Походи по разделам — они появятся.</div>`}
+          </div>
+        </div>
+      `;
+    }
+
+    // ---------- Binding page events ----------
+    function bindPageEvents(page){
+      // common: data-go
+      $$("[data-go]").forEach(b=>b.addEventListener("click", ()=>go(b.dataset.go)));
+
+      if(page==="dashboard"){
+        $$("[data-go]").forEach(b=>b.addEventListener("click", ()=>go(b.dataset.go)));
+        $("#btnReset")?.addEventListener("click", ()=>{
+          if(confirm("Сбросить данные к исходному MVP состоянию?")){
+            localStorage.removeItem(LS_KEY);
+            location.reload();
+          }
+        });
+        $$("button[data-go]").forEach(btn=>{
+          btn.addEventListener("click", ()=>go(btn.dataset.go));
+        });
+      }
+
+      if(page==="calculator"){
+        $("#btnAddCalcItem")?.addEventListener("click", ()=>{
+          state.calculator.items.push({
+            id: Date.now(),
+            width: 30,
+            height: 20,
+            qty: 10,
+            sides:"1",
+            complexity:"Лёгкий"
+          });
+          saveState();
+          render();
+          toast("Позиция добавлена");
+          logActivity("Добавил позицию в калькуляторе");
+        });
+
+        $$("[data-del-calc]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const id = Number(btn.dataset.delCalc);
+            state.calculator.items = state.calculator.items.filter(x=>x.id!==id);
+            saveState();
+            render();
+            toast("Позиция удалена");
+            logActivity("Удалил позицию калькулятора");
+          });
+        });
+
+        $$("[data-calc]").forEach(inp=>{
+          inp.addEventListener("change", ()=>{
+            const id = Number(inp.dataset.id);
+            const field = inp.dataset.calc;
+            const item = state.calculator.items.find(x=>x.id===id);
+            if(!item) return;
+            item[field] = (inp.tagName==="SELECT") ? inp.value : Number(inp.value || 0);
+            saveState();
+          });
+        });
+
+        $("#btnMargin")?.addEventListener("click", ()=>{
+          openModal("Маржа", `
+            <div class="row">
+              <div class="field">
+                <label>Маржа (%)</label>
+                <input id="marginInput" type="number" min="0" max="500" value="${state.calculator.marginPct}" />
+              </div>
+              <button class="btn primary" id="marginApply">Применить</button>
+            </div>
+            <div class="subtle" style="margin-top:10px">
+              Кнопка маржи — красная, круглая, с «фейерверком» (анимация).
+            </div>
+          `);
+          $("#marginApply").addEventListener("click", ()=>{
+            const v = Number($("#marginInput").value || 0);
+            state.calculator.marginPct = Math.max(0, Math.min(500, v));
+            saveState();
+            closeModal();
+            render();
+            toast("Маржа обновлена");
+            launchFireworks(document.getElementById('btnMargin'));
+            logActivity("Изменил маржу");
+          });
+        });
+
+        $("#btnCalcTotal")?.addEventListener("click", ()=>{
+          const { cost, total } = calcDTF();
+          $("#costLabel").textContent = `${cost.toLocaleString()} ₽`;
+          $("#totalLabel").textContent = `${total.toLocaleString()} ₽`;
+          toast("Рассчитано");
+          logActivity("Сделал расчёт DTF");
+        });
+
+        $("#btnSaveToOrder")?.addEventListener("click", ()=>{
+          const { total } = calcDTF();
+          const client = state.clients[0];
+          if(!client){
+            toast("Сначала создайте клиента");
+            return;
+          }
+          const id = Date.now()%100000;
+          state.orders.push({
+            id,
+            clientId: client.id,
+            title: `DTF расчёт (${state.calculator.items.length} поз.)`,
+            status: "Обработка",
+            createdAt: Date.now(),
+            note: `Сумма: ${total} ₽`
+          });
+          saveState();
+          toast("Сохранено как заказ");
+          state.notifications.unshift({ id:Date.now(), text:`Создан заказ #${id} из калькулятора`, at:Date.now() });
+          saveState();
+          logActivity(`Создал заказ #${id} из калькулятора`);
+        });
+
+        $("#btnSaveToDoc")?.addEventListener("click", ()=>{
+          const { cost, total } = calcDTF();
+          const id = Date.now()%100000;
+          const content = [
+            "Коммерческое предложение (MVP)",
+            "",
+            `Расчёт DTF: позиций: ${state.calculator.items.length}`,
+            `Себестоимость: ${cost} ₽`,
+            `Маржа: ${state.calculator.marginPct}%`,
+            `Итого: ${total} ₽`,
+            "",
+            "Revolution Print"
+          ].join("\n");
+          state.documents.unshift({ id, type:"КП", title:`КП DTF #${id}`, createdAt:Date.now(), content });
+          saveState();
+          toast("Сохранено в документы");
+          logActivity(`Сохранил КП DTF #${id}`);
+        });
+      }
+
+      if(page==="clients"){
+        $("#btnNewClient")?.addEventListener("click", ()=>{
+          openModal("Новый клиент", `
+            <div class="row">
+              <div class="field" style="flex:1;min-width:240px">
+                <label>ФИО / Название</label>
+                <input id="newClientName" placeholder="Например: ООО Пример" />
+              </div>
+              <div class="field">
+                <label>Статус</label>
+                <select id="newClientStatus">
+                  ${["Новый","В работе","Ожидании","Отказ","Закрыт"].map(s=>`<option>${s}</option>`).join("")}
+                </select>
+              </div>
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label>Комментарий</label>
+              <textarea id="newClientComment" placeholder="Результат переговоров..."></textarea>
+            </div>
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" id="createClient">Создать</button>
+              <button class="btn ghost" id="cancelClient">Отмена</button>
+            </div>
+          `);
+
+          $("#cancelClient").addEventListener("click", closeModal);
+          $("#createClient").addEventListener("click", ()=>{
+            const name = $("#newClientName").value.trim();
+            const status = $("#newClientStatus").value;
+            const comment = $("#newClientComment").value.trim();
+            if(!name){ toast("Введите имя клиента"); return; }
+
+            const id = Date.now()%1000000;
+            state.clients.unshift({
+              id, name, status,
+              owner: null,
+              firstCall: null,
+              lastCall: null,
+              comment,
+              createdAt: Date.now()
+            });
+            state.notifications.unshift({ id:Date.now(), text:`Новый клиент: ${name}`, at:Date.now() });
+            state.chat.messages.push({
+              id:Date.now(),
+              type:"system",
+              user:"Система",
+              text:`Поступил новый клиент: ${name}`,
+              at:Date.now(),
+              files:[],
+              link:`client:${id}`
+            });
+
+            saveState();
+            closeModal();
+            render();
+            toast("Клиент создан");
+            logActivity(`Создал клиента: ${name}`);
+          });
+        });
+
+        $$("[data-client-status]").forEach(sel=>{
+          sel.addEventListener("change", ()=>{
+            const id = Number(sel.dataset.clientStatus);
+            const client = state.clients.find(c=>c.id===id);
+            if(!client) return;
+            client.status = sel.value;
+            saveState();
+            toast("Статус обновлён");
+            logActivity(`Изменил статус клиента #${id} на "${sel.value}"`);
+          });
+        });
+
+        $$("[data-client-calls]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const id = Number(btn.dataset.clientCalls);
+            const client = state.clients.find(c=>c.id===id);
+            if(!client) return;
+
+            openModal("Звонки и комментарий", `
+              <div class="row">
+                <div class="field">
+                  <label>Дата первого звонка</label>
+                  <input id="firstCall" type="date" value="${toDateValue(client.firstCall)}" />
+                </div>
+                <div class="field">
+                  <label>Дата последнего звонка</label>
+                  <input id="lastCall" type="date" value="${toDateValue(client.lastCall)}" />
+                </div>
+              </div>
+              <div class="field" style="margin-top:10px">
+                <label>Комментарий (результат переговоров)</label>
+                <textarea id="callComment">${escapeHtml(client.comment || "")}</textarea>
+              </div>
+              <div class="row" style="margin-top:12px">
+                <button class="btn primary" id="saveCalls">Сохранить</button>
+                <button class="btn ghost" id="cancelCalls">Отмена</button>
+              </div>
+            `);
+
+            $("#cancelCalls").addEventListener("click", closeModal);
+            $("#saveCalls").addEventListener("click", ()=>{
+              client.firstCall = fromDateValue($("#firstCall").value);
+              client.lastCall = fromDateValue($("#lastCall").value);
+              client.comment = $("#callComment").value.trim();
+              saveState();
+              closeModal();
+              render();
+              toast("Обновлено");
+              logActivity(`Обновил звонки/коммент клиента #${id}`);
+            });
+          });
+        });
+
+        $$("[data-client-take]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const id = Number(btn.dataset.clientTake);
+            const client = state.clients.find(c=>c.id===id);
+            if(!client) return;
+
+            if(client.owner){
+              toast("Клиент занят, выберите другого");
+              return;
+            }
+            client.owner = state.user.fullName;
+            client.status = "В работе";
+
+            state.chat.messages.push({
+              id: Date.now(),
+              type:"system",
+              user:"Система",
+              text:`${state.user.fullName} взял клиента "${client.name}" на обработку`,
+              at: Date.now(),
+              files:[],
+              link:`client:${client.id}`
+            });
+
+            saveState();
+            render();
+            toast("Клиент взят");
+            logActivity(`Взял клиента "${client.name}"`);
+          });
+        });
+
+        $$("[data-client-edit]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const id = Number(btn.dataset.clientEdit);
+            const c = state.clients.find(x=>x.id===id);
+            if(!c) return;
+
+            openModal("Карточка клиента", `
+              <div class="chat-message">
+                <b>${escapeHtml(c.name)}</b>
+                <div class="subtle">ID: ${c.id} • Создан: ${fmtDateTime(c.createdAt)}</div>
+              </div>
+              <div class="row">
+                <div class="pill">Статус: <b>${escapeHtml(c.status)}</b></div>
+                <div class="pill">Ответственный: <b>${escapeHtml(c.owner || "—")}</b></div>
+              </div>
+              <div class="chat-message" style="margin-top:10px">
+                <b>Комментарий:</b>
+                <div style="white-space:pre-wrap">${escapeHtml(c.comment || "—")}</div>
+              </div>
+              <div class="row" style="margin-top:10px">
+                <button class="btn ghost" data-go="orders">Перейти к заказам</button>
+                <button class="btn ghost" data-go="chat">Открыть чат</button>
+              </div>
+            `);
+            $$("[data-go]").forEach(b=>b.addEventListener("click", ()=>{ closeModal(); go(b.dataset.go); }));
+          });
+        });
+      }
+
+      if(page==="orders"){
+        $("#btnNewOrder")?.addEventListener("click", ()=>{
+          if(!state.clients.length){
+            toast("Сначала создайте клиента");
+            return;
+          }
+          openModal("Новый заказ", `
+            <div class="row">
+              <div class="field" style="flex:1;min-width:240px">
+                <label>Название</label>
+                <input id="newOrderTitle" placeholder="Например: DTF перенос" />
+              </div>
+              <div class="field">
+                <label>Клиент</label>
+                <select id="newOrderClient">
+                  ${state.clients.map(c=>`<option value="${c.id}">${escapeHtml(c.name)}</option>`).join("")}
+                </select>
+              </div>
+              <div class="field">
+                <label>Статус</label>
+                <select id="newOrderStatus">
+                  ${["Обработка","В работе","Готов","Отменен","Ожидании"].map(s=>`<option>${s}</option>`).join("")}
+                </select>
+              </div>
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label>Комментарий</label>
+              <textarea id="newOrderNote"></textarea>
+            </div>
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" id="createOrder">Создать</button>
+              <button class="btn ghost" id="cancelOrder">Отмена</button>
+            </div>
+          `);
+          $("#cancelOrder").addEventListener("click", closeModal);
+          $("#createOrder").addEventListener("click", ()=>{
+            const title = $("#newOrderTitle").value.trim();
+            const clientId = Number($("#newOrderClient").value);
+            const status = $("#newOrderStatus").value;
+            const note = $("#newOrderNote").value.trim();
+            if(!title){ toast("Введите название"); return; }
+
+            const id = Date.now()%100000;
+            state.orders.unshift({ id, clientId, title, status, createdAt: Date.now(), note });
+            state.chat.messages.push({
+              id: Date.now(),
+              type:"system",
+              user:"Система",
+              text:`Создан заказ #${id} для клиента "${(state.clients.find(c=>c.id===clientId)||{}).name || "—"}"`,
+              at: Date.now(),
+              files:[],
+              link:`order:${id}`
+            });
+            saveState();
+            closeModal();
+            render();
+            toast("Заказ создан");
+            logActivity(`Создал заказ #${id}`);
+          });
+        });
+
+        $$("[data-order-status]").forEach(sel=>{
+          sel.addEventListener("change", ()=>{
+            const id = Number(sel.dataset.orderStatus);
+            const o = state.orders.find(x=>x.id===id);
+            if(!o) return;
+            o.status = sel.value;
+            state.notifications.unshift({ id:Date.now(), text:`Заказ #${id}: статус → ${sel.value}`, at:Date.now() });
+            saveState();
+            toast("Статус заказа обновлён");
+            logActivity(`Изменил статус заказа #${id} на "${sel.value}"`);
+          });
+        });
+
+        $$("[data-order-edit]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const id = Number(btn.dataset.orderEdit);
+            const o = state.orders.find(x=>x.id===id);
+            if(!o) return;
+
+            openModal(`Заказ #${o.id}`, `
+              <div class="chat-message">
+                <b>${escapeHtml(o.title)}</b>
+                <div class="subtle">${fmtDateTime(o.createdAt)}</div>
+              </div>
+
+              <div class="row">
+                <div class="field" style="flex:1">
+                  <label>Комментарий</label>
+                  <textarea id="orderNote">${escapeHtml(o.note || "")}</textarea>
+                </div>
+              </div>
+
+              <div class="row" style="margin-top:12px">
+                <button class="btn primary" id="saveOrder">Сохранить</button>
+                <button class="btn ghost" id="closeOrder">Закрыть</button>
+              </div>
+            `);
+
+            $("#closeOrder").addEventListener("click", closeModal);
+            $("#saveOrder").addEventListener("click", ()=>{
+              o.note = $("#orderNote").value.trim();
+              saveState();
+              closeModal();
+              render();
+              toast("Сохранено");
+              logActivity(`Обновил заказ #${id}`);
+            });
+          });
+        });
+      }
+
+      if(page==="production"){
+        $("#btnNewProd")?.addEventListener("click", ()=>{
+          openModal("Добавить компанию", `
+            <div class="row">
+              <div class="field" style="flex:1;min-width:240px">
+                <label>Название компании</label>
+                <input id="prodName" />
+              </div>
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label>Информация о компании</label>
+              <textarea id="prodInfo"></textarea>
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label>Формат сотрудничества</label>
+              <input id="prodCoop" placeholder="Например: на договоре / сдельно / партнёры" />
+            </div>
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" id="prodCreate">Создать</button>
+              <button class="btn ghost" id="prodCancel">Отмена</button>
+            </div>
+          `);
+          $("#prodCancel").addEventListener("click", closeModal);
+          $("#prodCreate").addEventListener("click", ()=>{
+            const name = $("#prodName").value.trim();
+            if(!name){ toast("Введите название"); return; }
+            state.productionCompanies.unshift({
+              id: Date.now()%1000000,
+              name,
+              info: $("#prodInfo").value.trim(),
+              cooperation: $("#prodCoop").value.trim(),
+              createdAt: Date.now()
+            });
+            saveState();
+            closeModal();
+            render();
+            toast("Компания добавлена");
+            logActivity(`Добавил производство: ${name}`);
+          });
+        });
+
+        $$("[data-prod-edit]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const id = Number(btn.dataset.prodEdit);
+            const p = state.productionCompanies.find(x=>x.id===id);
+            if(!p) return;
+
+            openModal("Карточка производства", `
+              <div class="chat-message">
+                <b>${escapeHtml(p.name)}</b>
+                <div class="subtle">${fmtDateTime(p.createdAt)}</div>
+              </div>
+              <div class="chat-message"><b>Информация:</b><div style="white-space:pre-wrap">${escapeHtml(p.info || "—")}</div></div>
+              <div class="chat-message"><b>Сотрудничество:</b><div style="white-space:pre-wrap">${escapeHtml(p.cooperation || "—")}</div></div>
+            `);
+          });
+        });
+      }
+
+      if(page==="documents"){
+        $("#btnNewDoc")?.addEventListener("click", ()=>{
+          openModal("Новый документ", `
+            <div class="row">
+              <div class="field">
+                <label>Тип</label>
+                <select id="docType">
+                  ${["КП","Смета","Акт"].map(t=>`<option>${t}</option>`).join("")}
+                </select>
+              </div>
+              <div class="field" style="flex:1;min-width:260px">
+                <label>Название</label>
+                <input id="docTitle" placeholder="Например: КП клиенту" />
+              </div>
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label>Текст</label>
+              <textarea id="docText">Документ (MVP)...</textarea>
+            </div>
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" id="docCreate">Создать</button>
+              <button class="btn ghost" id="docCancel">Отмена</button>
+            </div>
+          `);
+
+          $("#docCancel").addEventListener("click", closeModal);
+          $("#docCreate").addEventListener("click", ()=>{
+            const type = $("#docType").value;
+            const title = $("#docTitle").value.trim() || `${type} ${Date.now()%10000}`;
+            const content = $("#docText").value;
+            const id = Date.now()%100000;
+            state.documents.unshift({ id, type, title, createdAt:Date.now(), content });
+            saveState();
+            closeModal();
+            render();
+            toast("Документ создан");
+            logActivity(`Создал документ ${type} #${id}`);
+          });
+        });
+
+        $$("[data-doc-open]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const id = Number(btn.dataset.docOpen);
+            const d = state.documents.find(x=>x.id===id);
+            if(!d) return;
+            openModal(`${d.type}: ${d.title}`, `
+              <div class="chat-message" style="white-space:pre-wrap">${escapeHtml(d.content)}</div>
+              <div class="row">
+                <button class="btn ghost" data-doc-word="${id}">Word</button>
+                <button class="btn ghost" data-doc-excel="${id}">Excel</button>
+                <button class="btn ghost" data-doc-pdf="${id}">PDF</button>
+              </div>
+            `);
+            // rebind exports inside modal
+            $$("[data-doc-word]").forEach(b=>b.addEventListener("click", ()=>exportWord(getDoc(Number(b.dataset.docWord)))));
+            $$("[data-doc-excel]").forEach(b=>b.addEventListener("click", ()=>exportExcel(getDoc(Number(b.dataset.docExcel)))));
+            $$("[data-doc-pdf]").forEach(b=>b.addEventListener("click", ()=>exportPDF(getDoc(Number(b.dataset.docPdf)))));
+          });
+        });
+
+        $$("[data-doc-word]").forEach(btn=>btn.addEventListener("click", ()=>exportWord(getDoc(Number(btn.dataset.docWord)))));
+        $$("[data-doc-excel]").forEach(btn=>btn.addEventListener("click", ()=>exportExcel(getDoc(Number(btn.dataset.docExcel)))));
+        $$("[data-doc-pdf]").forEach(btn=>btn.addEventListener("click", ()=>exportPDF(getDoc(Number(btn.dataset.docPdf)))));
+      }
+
+      if(page==="kp"){
+        const syncPreview = ()=>{
+          const type = $("#docGenType").value;
+          const client = $("#docGenClient").value.trim();
+          const orderId = $("#docGenOrder").value;
+          const sum = Number($("#docGenSum").value || 0);
+          const terms = $("#docGenTerms").value.trim();
+          const pay = $("#docGenPayment").value.trim();
+          const signer = $("#docGenSigner").value.trim();
+          const spec = $("#docGenSpec").value.trim();
+
+          const order = orderId ? state.orders.find(o=>String(o.id)===String(orderId)) : null;
+          const date = new Date().toLocaleDateString();
+
+          const title = `${type} ${client ? "для " + client : ""}`.trim();
+
+          const body = buildOfficialDocText({
+            type, title, date, client,
+            order, sum, terms, pay, signer, spec
+          });
+
+          $("#docGenPreview").textContent = body;
+          return { type, title, body };
+        };
+
+        const tryFillSumFromOrder = ()=>{
+          const orderId = $("#docGenOrder").value;
+          if(!orderId) return;
+          const order = state.orders.find(o=>String(o.id)===String(orderId));
+          if(!order) return;
+
+          // Попытка вытащить сумму из примечания заказа, если она сама есть (например: "Сумма: 12345 ₽")
+          const note = String(order.note||"");
+          const m = note.match(/(\d[\d\s]*)\s*₽/);
+          const m2 = note.match(/Сумма:\s*(\d[\d\s]*)/i);
+          const raw = (m2 && m2[1]) || (m && m[1]) || "";
+          const parsed = raw ? Number(raw.replace(/\s+/g,"")) : 0;
+          if(parsed>0) $("#docGenSum").value = parsed;
+        };
+
+        // initial preview
+        setTimeout(()=>{
+          // автоподсказка: если есть клиент из списка — не навязываем, пусть вводит сам
+          $("#docGenOrder").addEventListener("change", ()=>{ tryFillSumFromOrder(); syncPreview(); });
+          ["docGenType","docGenClient","docGenSum","docGenTerms","docGenPayment","docGenSigner","docGenSpec"]
+            .forEach(id=>$("#"+id).addEventListener("input", syncPreview));
+
+          $("#btnDocCreate").addEventListener("click", ()=>{
+            const { type, title, body } = syncPreview();
+            const client = $("#docGenClient").value.trim();
+            if(!client){
+              toast("Укажите компанию заказчика");
+              return;
+            }
+
+            const id = Date.now()%100000;
+            const doc = { id, type, title: `${type} #${id}`, createdAt: Date.now(), content: body };
+            state.documents.unshift(doc);
+            saveState();
+            toast("Документ создан");
+            logActivity(`Создал документ ${type} #${id}`);
+          });
+
+          $("#btnDocToDocs").addEventListener("click", ()=>{
+            $("#btnDocCreate").click();
+            go("documents");
+          });
+
+          $("#btnDocWord").addEventListener("click", ()=>{
+            const { type, title, body } = syncPreview();
+            exportWord({ type, title, createdAt:Date.now(), content: body });
+          });
+
+          $("#btnDocExcel").addEventListener("click", ()=>{
+            const { type, title, body } = syncPreview();
+            exportExcel({ type, title, createdAt:Date.now(), content: body });
+          });
+
+          $("#btnDocPDF").addEventListener("click", ()=>{
+            const { type, title, body } = syncPreview();
+            exportPDF({ type, title, createdAt:Date.now(), content: body });
+          });
+
+          syncPreview();
+        }, 0);
+      }
+
+      if(page==="chat"){
+        $("#btnChatHelp")?.addEventListener("click", ()=>{
+          openModal("Правила чата", `
+            <div class="chat-message">
+              <b>Правила MVP</b>
+              <div class="subtle">• Сообщения не удаляются</div>
+              <div class="subtle">• Файлы: ≤75MB каждый, ≤20 за раз</div>
+              <div class="subtle">• Можно привязать сообщение к клиенту/заказу</div>
+            </div>
+          `);
+        });
+
+        $("#btnPostSystem")?.addEventListener("click", ()=>{
+          state.chat.messages.push({
+            id: Date.now(),
+            type:"system",
+            user:"Система",
+            text:"Системное сообщение (MVP).",
+            at: Date.now(),
+            files:[],
+            link:null
+          });
+          saveState();
+          render();
+          toast("Системное сообщение отправлено");
+        });
+
+        $("#btnSend")?.addEventListener("click", ()=>{
+          const text = $("#chatText").value.trim();
+          const filesEl = $("#chatFiles");
+          const files = filesEl.files ? Array.from(filesEl.files) : [];
+          const linkSel = $("#chatLink").value || null;
+
+          if(!text && files.length===0){
+            toast("Введите сообщение или прикрепите файлы");
+            return;
+          }
+
+          if(files.length > 20){
+            toast("Не более 20 файлов за раз");
+            return;
+          }
+
+          const over = files.find(f=>f.size > 75*1024*1024);
+          if(over){
+            toast(`Файл "${over.name}" больше 75MB`);
+            return;
+          }
+
+          const fileMeta = files.map(f=>({ name:f.name, size:f.size }));
+          state.chat.messages.push({
+            id: Date.now(),
+            type:"user",
+            user: state.user.fullName,
+            text: text || "(файлы)",
+            at: Date.now(),
+            files: fileMeta,
+            link: linkSel
+          });
+
+          // очистка
+          $("#chatText").value = "";
+          filesEl.value = "";
+
+          saveState();
+          render();
+
+          // автоскролл вниз
+          setTimeout(()=>{
+            const list = $("#chatList");
+            if(list) list.scrollTop = list.scrollHeight;
+          }, 0);
+
+          logActivity("Отправил сообщение в чат");
+        });
+
+        // quick actions go already bound
+      }
+
+      if(page==="admin"){
+        $("#btnAddUser")?.addEventListener("click", ()=>{
+          openModal("Новый сотрудник", `
+            <div class="row">
+              <div class="field" style="flex:1;min-width:240px">
+                <label>ФИО</label>
+                <input id="uName" />
+              </div>
+              <div class="field">
+                <label>Роль</label>
+                <select id="uRole">
+                  ${Object.keys(ROLE_LABELS).map(r=>`<option value="${r}">${ROLE_LABELS[r]}</option>`).join("")}
+                </select>
+              </div>
+            </div>
+            <div class="row" style="margin-top:10px">
+              <div class="field" style="flex:1;min-width:240px">
+                <label>Email</label>
+                <input id="uEmail" placeholder="user@revolutionprint.local" />
+              </div>
+              <div class="field">
+                <label>Пароль</label>
+                <input id="uPass" placeholder="(MVP)" />
+              </div>
+            </div>
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" id="uCreate">Создать</button>
+              <button class="btn ghost" id="uCancel">Отмена</button>
+            </div>
+          `);
+          $("#uCancel").addEventListener("click", closeModal);
+          $("#uCreate").addEventListener("click", ()=>{
+            const fullName = $("#uName").value.trim();
+            const role = $("#uRole").value;
+            const email = $("#uEmail").value.trim();
+            if(!fullName || !email){ toast("Заполните ФИО и Email"); return; }
+            state.users.unshift({
+              id: Date.now()%100000,
+              fullName, role, email,
+              password:"••••••••",
+              active:true
+            });
+            saveState();
+            closeModal();
+            render();
+            toast("Сотрудник добавлен");
+            logActivity(`Добавил сотрудника: ${fullName}`);
+          });
+        });
+
+        $("#btnSwitchRole")?.addEventListener("click", ()=>{
+          const roles = Object.keys(ROLE_LABELS);
+          const idx = roles.indexOf(state.user.role);
+          state.user.role = roles[(idx+1) % roles.length];
+          saveState();
+          render();
+          toast("Роль переключена (тест)");
+          logActivity(`Переключил роль на ${state.user.role}`);
+        });
+
+        $$("[data-user-open]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const id = Number(btn.dataset.userOpen);
+            const u = state.users.find(x=>x.id===id);
+            if(!u) return;
+            openModal("Сотрудник", `
+              <div class="chat-message">
+                <b>${escapeHtml(u.fullName)}</b>
+                <div class="subtle">${ROLE_LABELS[u.role] || u.role}</div>
+              </div>
+              <div class="chat-message">
+                <b>Email:</b> ${escapeHtml(u.email)}<br/>
+                <b>Активен:</b> ${u.active ? "Да" : "Нет"}<br/>
+                <b>Пароль:</b> ${u.password}
+              </div>
+              <div class="subtle">В MVP редактирование упрощено. Позже будет полноценная админ-панель.</div>
+            `);
+          });
+        });
+      }
+
+      if(page==="profile"){
+        $("#btnSaveProfile")?.addEventListener("click", ()=>{
+          const name = $("#profileName").value.trim();
+          const role = $("#profileRole").value;
+          if(!name){ toast("Введите ФИО"); return; }
+          state.user.fullName = name;
+          state.user.role = role;
+          saveState();
+          render();
+          toast("Сохранено");
+          logActivity("Обновил профиль");
+        });
+
+        $("#btnClearActivity")?.addEventListener("click", ()=>{
+          if(confirm("Очистить вашу статистику?")){
+            state.stats.activity = state.stats.activity.filter(a=>a.userId!==state.user.id);
+            saveState();
+            render();
+            toast("Очищено");
+          }
+        });
+      }
+    }
+
+    // ---------- Calculator math (MVP) ----------
+    function calcDTF(){
+      const items = state.calculator.items || [];
+      // Упрощённая модель:
+      // площадь (м²) = w*h / 10000
+      // коэффициенты:
+      // sides 2 => *1.25
+      // complexity "Сложный" => *1.2
+      // базовая ставка: 520 ₽ за м² (условно)
+      const basePerM2 = 520;
+
+      let cost = 0;
+      for(const it of items){
+        const area = (Number(it.width||0) * Number(it.height||0)) / 10000;
+        let k = 1;
+        if(String(it.sides)==="2") k *= 1.25;
+        if(String(it.complexity)==="Сложный") k *= 1.2;
+        const line = area * Number(it.qty||0) * basePerM2 * k;
+        cost += line;
+      }
+      cost = Math.round(cost);
+      const margin = Number(state.calculator.marginPct||0);
+      const total = Math.round(cost * (1 + margin/100));
+      return { cost, total };
+    }
+
+    // ---------- Exports ----------
+    function getDoc(id){
+      const d = state.documents.find(x=>x.id===id);
+      return d || { title:"Документ", type:"", createdAt:Date.now(), content:"" };
+    }
+
+    function exportWord(doc){
+      // простая doc-выгрузка: HTML внутри .doc
+      const html = `
+        <html><head><meta charset="utf-8"></head><body>
+        <h2>${escapeHtml(doc.type || "Документ")} — ${escapeHtml(doc.title || "")}</h2>
+        <pre style="white-space:pre-wrap;font-family:Arial">${escapeHtml(doc.content || "")}</pre>
+        <p style="color:#666;font-size:12px">Сформировано: ${fmtDateTime(doc.createdAt || Date.now())}</p>
+        <\/body><\/html>
+      `;
+      downloadBlob(new Blob([html], {type:"application/msword"}), safeName(`${doc.type||"doc"}_${doc.title||"document"}.doc`));
+      toast("Экспорт Word");
+    }
+
+    function exportExcel(doc){
+      // MVP: CSV (Excel открывает)
+      const rows = [
+        ["Type", doc.type||""],
+        ["Title", doc.title||""],
+        ["CreatedAt", new Date(doc.createdAt||Date.now()).toISOString()],
+        ["Content", (doc.content||"").replace(/\n/g," \\n ")]
+      ];
+      const csv = rows.map(r=>r.map(csvCell).join(",")).join("\n");
+      downloadBlob(new Blob([csv], {type:"text/csv;charset=utf-8"}), safeName(`${doc.type||"doc"}_${doc.title||"document"}.csv`));
+      toast("Экспорт Excel (CSV)");
+    }
+
+    function exportPDF(doc){
+  // PDF разрешён только для КП
+  if(!doc || doc.type!=="КП"){
+    toast("PDF экспорт доступен только для КП");
+    return;
+  }
+
+  const html = `
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>${escapeHtml(doc.title || "КП")}</title>
+        <style>
+          body{font-family:"Times New Roman",serif;padding:40px;line-height:1.45;color:#000}
+          h2{margin:0 0 14px 0}
+          .meta{color:#555;font-size:12px;margin-bottom:14px}
+          pre{white-space:pre-wrap;font-size:14px;margin:0}
+        </style>
+      </head>
+      <body>
+        <h2>${escapeHtml(doc.type || "КП")} — ${escapeHtml(doc.title || "")}</h2>
+        <div class="meta">Сформировано: ${new Date(doc.createdAt || Date.now()).toLocaleString()}</div>
+        <pre>${escapeHtml(doc.content || "")}</pre>
+      <\/body>
+    <\/html>
+  `;
+
+  const iframe = document.createElement("iframe");
+  iframe.style.position="fixed";
+  iframe.style.right="0";
+  iframe.style.bottom="0";
+  iframe.style.width="0";
+  iframe.style.height="0";
+  iframe.style.border="0";
+  document.body.appendChild(iframe);
+
+  const d = iframe.contentWindow.document;
+  d.open();
+  d.write(html);
+  d.close();
+
+  iframe.onload = ()=>{
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+    setTimeout(()=>iframe.remove(), 1000);
+  };
+}
+
+    function csvCell(v){
+      const s = String(v ?? "");
+      const needs = /[",\n]/.test(s);
+      const escaped = s.replace(/"/g,'""');
+      return needs ? `"${escaped}"` : escaped;
+    }
+
+    function downloadBlob(blob, filename){
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 500);
+    }
+    function safeName(name){
+      return name.replace(/[\\/:*?"<>|]+/g, "_").slice(0,120);
+    }
+
+    // ---------- KP helpers ----------
+    function moveBlock(id, dir){
+      const arr = state.kpEditor.blocks;
+      const idx = arr.findIndex(b=>b.id===id);
+      if(idx<0) return;
+      const ni = idx + dir;
+      if(ni<0 || ni>=arr.length) return;
+      const tmp = arr[idx];
+      arr[idx] = arr[ni];
+      arr[ni] = tmp;
+      saveState();
+      render();
+      toast("Блок перемещён");
+      logActivity("Переместил блок КП");
+    }
+
+    // ---------- Date helpers ----------
+    function toDateValue(ts){
+      if(!ts) return "";
+      const d = new Date(ts);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth()+1).padStart(2,"0");
+      const dd = String(d.getDate()).padStart(2,"0");
+      return `${yyyy}-${mm}-${dd}`;
+    }
+    function fromDateValue(v){
+      if(!v) return null;
+      const [y,m,d] = v.split("-").map(Number);
+      if(!y||!m||!d) return null;
+      return new Date(y, m-1, d).getTime();
+    }
+
+    // ---------- HTML escaping ----------
+    function escapeHtml(s){
+      return String(s ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // ---------- Initial render ----------
+    render();
+    toast("MVP загружен");
+    logActivity("Открыл платформу");
+  </script>
+</body>
+</html>
