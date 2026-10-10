@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alexander Yakimenko — Assistant / Project Management</title>
+  <meta name="description" content="Alexander Yakimenko, 20 — assistant / project management. 4 months of hands-on operations as deputy CEO: team grown from 3 to 12 people, processes built from scratch, 4 client projects coordinated." />
+  <meta property="og:title" content="Alexander Yakimenko — Assistant / Project Management" />
+  <meta property="og:description" content="4 months of hands-on operations as deputy CEO: team grown from 3 to 12 people, processes built from scratch, 4 client projects coordinated." />
+  <meta property="og:image" content="https://alex46796.github.io/Landing/photo.png" />
+  <meta property="og:url" content="https://alex46796.github.io/Landing/en.html" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/png" href="favicon-mark.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #16110d;
+      --bg-2: #241a12;
+      --panel: rgba(255,235,210,0.04);
+      --panel-border: rgba(255,235,210,0.10);
+      --text: #f5efe8;
+      --muted: #b5a58f;
+      --accent: #c17f3e;
+      --accent-dim: rgba(193,127,62,0.16);
+      --line: rgba(255,235,210,0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scrollbar-color: var(--accent) var(--bg-2); scrollbar-width: thin; }
+    body {
+      margin: 0;
+      font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 0%, var(--bg-2), var(--bg) 55%);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1100px, calc(100% - 2.5rem)); margin: 0 auto; }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg-2); }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #e0a468, var(--accent));
+      border-radius: 999px;
+      box-shadow: 0 0 8px rgba(193,127,62,0.55);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #f0b57a, var(--accent));
+      box-shadow: 0 0 12px rgba(193,127,62,0.75);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid rgba(193,127,62,0.4);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      padding: 6rem 0 4rem;
+    }
+
+    .hero .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+    }
+
+    .hero-text { flex: 1.2; min-width: 0; }
+
+    .hero-photo {
+      display: inline-flex;
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      transform: translateY(20px) scale(0.96);
+      transition: opacity 900ms ease, transform 900ms ease;
+    }
+    .hero-photo.visible { opacity: 1; transform: translateY(0) scale(1); }
+    .hero-photo img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--accent);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+      margin-top: 2.2rem;
+    }
+    .step .step-num {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--accent);
+      border-top: 2px solid var(--accent);
+      display: inline-block;
+      padding-top: 0.4rem;
+      margin-bottom: 0.6rem;
+    }
+    .step .step-text { color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
+
+    @media (max-width: 860px) {
+      .hero-photo img { width: 110px; height: 110px; }
+      .hero-text { text-align: center; }
+      .hero .button-row { justify-content: center; }
+      .hero .steps-row { display: none; }
+      .hero .stat-row { margin-left: auto; margin-right: auto; }
+      h1 { font-size: clamp(1.7rem, 8vw, 2.4rem); line-height: 1.3; }
+    }
+
+    h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+      line-height: 1.15;
+      margin: 0 0 1.1rem;
+      font-weight: 800;
+      text-wrap: balance;
+    }
+
+    .accent-text { color: var(--accent); }
+
+    .lead {
+      font-size: 1.08rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .button-row { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem; }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 1.4rem;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-primary { background: var(--accent); color: #1a1410; box-shadow: 0 10px 30px rgba(193,127,62,0.35); }
+    .btn-secondary { background: transparent; border: 1px solid var(--line); color: var(--text); }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      border-top: 1px solid var(--line);
+      padding-top: 1.6rem;
+    }
+    .stat-row .num { font-family: 'Unbounded', sans-serif; font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 800; color: var(--accent); white-space: nowrap; }
+    .stat-row > div {
+      padding: 1rem 0.6rem;
+      border-radius: 14px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      text-align: center;
+    }
+    .stat-row .label { color: var(--muted); font-size: 0.85rem; }
+
+    section { padding: 3.5rem 0; }
+    .section-title { font-family: 'Unbounded', sans-serif; font-size: 1.7rem; margin-bottom: 0.4rem; }
+    .section-sub { color: var(--muted); margin-bottom: 2rem; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 600ms ease, transform 600ms ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .achievement-card {
+      padding: 1.6rem;
+      border-radius: 18px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      transition: transform 220ms ease, border-color 220ms ease;
+    }
+    .achievement-card:hover { transform: translateY(-6px); border-color: rgba(193,127,62,0.45); }
+    .achievement-card .big-num {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.1;
+      margin-bottom: 0.6rem;
+    }
+    .achievement-card .desc { color: var(--muted); font-size: 0.95rem; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .card {
+      padding: 1.6rem;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      transition: transform 220ms ease, border-color 220ms ease;
+    }
+    .card:hover { transform: translateY(-4px); border-color: rgba(193,127,62,0.3); }
+    .card h4 { margin-top: 0; margin-bottom: 0.7rem; }
+    .card p { color: var(--muted); margin: 0; }
+    #honest .card p { font-size: 1.15rem; line-height: 1.65; }
+    .card ul { color: var(--muted); margin: 0.6rem 0 0; padding-left: 1.2rem; }
+    .card li { margin-bottom: 0.4rem; }
+    .card .result { color: var(--text); margin-top: 0.8rem; font-weight: 600; }
+    .card .result span { color: var(--accent); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .tag {
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .sites-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+    .site-card {
+      padding: 1.6rem;
+      border-radius: 16px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(193,127,62,0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      font-size: 1rem;
+      color: inherit;
+      cursor: pointer;
+      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+    }
+    .site-card:hover, .site-card:focus-visible { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 16px 34px rgba(193,127,62,0.2); }
+    .site-card .case-badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #1a1410;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      margin-bottom: 0.2rem;
+    }
+    .site-card h4 { margin: 0; }
+    .site-card p { color: var(--muted); margin: 0; }
+    .site-card .site-role { color: var(--text); font-size: 0.85rem; font-weight: 600; }
+    .site-card .site-cta { color: var(--accent); font-weight: 700; margin-top: 0.4rem; }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,7,5,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 250ms ease;
+      z-index: 100;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+    .modal-panel {
+      position: relative;
+      max-width: 560px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 2.2rem;
+      border-radius: 20px;
+      background: var(--bg-2);
+      border: 1px solid var(--panel-border);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+      transform: translateY(16px) scale(0.98);
+      transition: transform 250ms ease;
+    }
+    .modal-overlay.open .modal-panel { transform: translateY(0) scale(1); }
+    .modal-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      border: 1px solid var(--panel-border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close:hover { color: var(--text); border-color: rgba(193,127,62,0.45); }
+    .modal-panel h3 { margin: 0 0 0.8rem; font-size: 1.4rem; padding-right: 2rem; }
+    .modal-panel .modal-desc { color: var(--muted); margin: 0; }
+    .modal-details { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 0.8rem; }
+    .modal-detail-row .modal-detail-label { color: var(--accent); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+    .modal-detail-row .modal-detail-value { color: var(--text); }
+    .modal-link { display: inline-block; margin-top: 1.4rem; color: var(--accent); font-weight: 700; }
+
+    .modal-slider {
+      position: relative;
+      margin: -2.2rem -2.2rem 1.4rem;
+      border-radius: 20px 20px 0 0;
+      overflow: hidden;
+      background: #000;
+    }
+    .modal-slider-img { width: 100%; display: block; aspect-ratio: 16 / 10; object-fit: cover; transition: opacity 180ms ease; }
+    .modal-slider-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-slider-nav:hover { background: rgba(0,0,0,0.8); }
+    .modal-slider-prev { left: 0.7rem; }
+    .modal-slider-next { right: 0.7rem; }
+    .modal-slider-dots {
+      position: absolute;
+      bottom: 0.7rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.4rem;
+    }
+    .modal-slider-dots .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      cursor: pointer;
+    }
+    .modal-slider-dots .dot.active { background: #fff; }
+
+    .card-photo {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .card-photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(22,17,13,0.92), rgba(22,17,13,0.68));
+      z-index: 0;
+    }
+    .card-photo > * { position: relative; z-index: 1; }
+
+    .traits-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .trait-card {
+      padding: 1.3rem;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      text-align: center;
+      transition: transform 220ms ease, border-color 220ms ease;
+    }
+    .trait-card:hover { transform: translateY(-4px); border-color: rgba(193,127,62,0.3); }
+    .trait-card .emoji { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .trait-card .title { font-weight: 700; margin-bottom: 0.3rem; overflow-wrap: break-word; }
+    .trait-card .desc { color: var(--muted); font-size: 0.85rem; }
+
+    .ps-panel {
+      padding: 1.8rem;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px dashed var(--panel-border);
+      color: var(--muted);
+    }
+    .ps-panel b { color: var(--text); }
+
+    .contact-panel {
+      padding: 2.2rem;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--accent-dim), transparent);
+      border: 1px solid rgba(193,127,62,0.35);
+      text-align: center;
+    }
+    .contact-panel h3 { font-size: 1.5rem; margin-top: 0; }
+    .contact-panel p { color: var(--muted); }
+
+    .footer { padding: 2rem 0 3rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
+
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: var(--accent);
+      z-index: 90;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent);
+      color: #1a1410;
+      font-size: 1.3rem;
+      font-weight: 800;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 220ms ease, transform 220ms ease, visibility 220ms;
+      box-shadow: 0 10px 24px rgba(193,127,62,0.35);
+      z-index: 80;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+    .section-title { position: relative; display: inline-block; padding-bottom: 0.7rem; }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 0;
+      background: var(--accent);
+      transition: width 700ms ease;
+    }
+    .section-title.underlined::after { width: 56px; }
+
+    @media (max-width: 860px) {
+      .stat-row, .achievements-grid, .grid-2, .sites-grid, .steps-row { grid-template-columns: 1fr; }
+      .traits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .modal-panel { padding: 1.6rem; }
+      .modal-slider { margin: -1.6rem -1.6rem 1.4rem; }
+    }
+    .lang-switch {
+      position: fixed;
+      top: 1.1rem;
+      right: 1.3rem;
+      z-index: 95;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.3rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #1a1410;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      box-shadow: 0 8px 24px rgba(193,127,62,0.45);
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(193,127,62,0.6); }
+    @media (max-width: 860px) {
+      .lang-switch { top: 0.7rem; right: 0.8rem; padding: 0.55rem 1rem; font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body id="top">
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <a class="lang-switch" href="index.html" hreflang="ru">🌐 Русский</a>
+
+  <header class="hero">
+    <div class="container">
+      <div class="hero-text">
+        <div class="hero-photo" id="heroPhoto">
+          <img src="photo.png" alt="Alexander Yakimenko" />
+        </div>
+        <div class="badge">Assistant · Project Management · Operations</div>
+        <h1>Alexander&nbsp;— I take operations and&nbsp;<span class="accent-text">chaos</span> off&nbsp;your&nbsp;plate</h1>
+        <p class="lead">
+          20 years old, Moscow. 4 months of hands-on operations as deputy CEO in&nbsp;a growing company: client negotiations, team oversight, document flow and&nbsp;processes&nbsp;— built from&nbsp;scratch, not inherited.
+        </p>
+        <div class="button-row">
+          <a class="btn btn-primary" href="#contact">Get in touch</a>
+          <a class="btn btn-secondary" href="#cases">Cases</a>
+          <a class="btn btn-secondary" href="resume.pdf" download>Download resume</a>
+        </div>
+        <div class="steps-row">
+          <div class="step">
+            <div class="step-num">01</div>
+            <div class="step-text">I build processes and&nbsp;playbooks tailored to&nbsp;a&nbsp;specific team</div>
+          </div>
+          <div class="step">
+            <div class="step-num">02</div>
+            <div class="step-text">I run document flow, technical specs and&nbsp;client negotiations</div>
+          </div>
+          <div class="step">
+            <div class="step-num">03</div>
+            <div class="step-text">I&nbsp;source and&nbsp;coordinate people and&nbsp;contractors</div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div>
+            <div class="num" data-target="12">0</div>
+            <div class="label">people on&nbsp;the team</div>
+          </div>
+          <div>
+            <div class="num" data-target="4">0</div>
+            <div class="label">client websites</div>
+          </div>
+          <div>
+            <div class="num" data-target="200000" data-prefix="₽" data-suffix="+">0</div>
+            <div class="label">in&nbsp;closed deals</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="honest">
+      <div class="container reveal">
+        <div class="card">
+          <p>
+            I&rsquo;m 20, a&nbsp;third-year Management student at&nbsp;RANEPA, and&nbsp;I haven&rsquo;t achieved anything world-changing yet. But&nbsp;I have something rare at&nbsp;this age: real experience building processes from&nbsp;scratch for&nbsp;a&nbsp;live team&nbsp;— not in&nbsp;theory, but&nbsp;hands-on. This isn&rsquo;t a&nbsp;one-off experiment&nbsp;— I&nbsp;deliberately aim at&nbsp;operations and&nbsp;management: the goal is&nbsp;to&nbsp;become a&nbsp;COO and&nbsp;then build my&nbsp;own business, and&nbsp;I treat every position as&nbsp;a&nbsp;step toward that, not&nbsp;just a&nbsp;line on&nbsp;a&nbsp;resume. Below are concrete cases, each of&nbsp;which I can defend in&nbsp;an&nbsp;interview.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="achievements">
+      <div class="container reveal">
+        <h2 class="section-title">Results in 4 months</h2>
+        <p class="section-sub">Agile Business&nbsp;— operations management, deputy CEO</p>
+        <div class="achievements-grid">
+          <div class="achievement-card">
+            <div class="big-num" data-target="4" data-prefix="×">×0</div>
+            <div class="desc">team growth&nbsp;— from&nbsp;3 to&nbsp;12 people, with hiring and&nbsp;onboarding processes built from&nbsp;scratch</div>
+          </div>
+          <div class="achievement-card">
+            <div class="big-num" data-target="0">0</div>
+            <div class="desc">lost requests after introducing task tracking (Yougile)</div>
+          </div>
+          <div class="achievement-card">
+            <div class="big-num" data-target="200000" data-prefix="₽" data-suffix="+" style="white-space: nowrap; font-size: 1.7rem;">0</div>
+            <div class="desc">in&nbsp;deals where I personally negotiated the price with clients</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cases">
+      <div class="container reveal">
+        <h2 class="section-title">Cases</h2>
+        <p class="section-sub">What I built myself, from&nbsp;idea to&nbsp;result</p>
+        <div class="grid-2">
+          <div class="card">
+            <h4>Team operating playbook</h4>
+            <p>When the team grew from&nbsp;3 to&nbsp;12 people, chaos set in. I&nbsp;introduced daily standups, weekly planning and&nbsp;an&nbsp;early-escalation protocol for&nbsp;missed deadlines instead of&nbsp;a&nbsp;blame-hunting culture.</p>
+            <p class="result">Result: <span>fewer missed deadlines</span>, communication chaos cut 4× while the team grew.</p>
+          </div>
+          <div class="card">
+            <h4>Sales funnel for consulting services</h4>
+            <p>Designed the full sales cycle: first-contact scripts, diagnostic and&nbsp;proposal structure, objection handling, and&nbsp;a&nbsp;client-retention mechanism after the deal.</p>
+            <p class="result">Result: <span>a&nbsp;complete sales cycle</span>, applied to&nbsp;the company&rsquo;s real deals.</p>
+          </div>
+          <div class="card">
+            <h4>Company market launch in&nbsp;4 weeks</h4>
+            <p>Developed and&nbsp;ran a&nbsp;phased go-to-market plan: foundation and&nbsp;finances&nbsp;→ product packaging&nbsp;→ price list and&nbsp;business card&nbsp;→ market entry, with a&nbsp;concrete deliverable for&nbsp;each week.</p>
+            <p class="result">Result: <span>the company entered the market</span>, all 4 stages delivered despite part of&nbsp;the team deviating from&nbsp;the plan.</p>
+          </div>
+          <div class="card">
+            <h4>Company culture and&nbsp;team roles</h4>
+            <p>Set the values of&nbsp;working together (transparency, no-blame, honesty with the client) and&nbsp;wrote job descriptions for&nbsp;6 team members with clear areas of&nbsp;responsibility.</p>
+            <p class="result">Result: <span>transparent rules and&nbsp;roles</span> instead of&nbsp;chaos while scaling from&nbsp;3&nbsp;to&nbsp;12 people.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sites">
+      <div class="container reveal">
+        <h2 class="section-title">Websites built under my lead</h2>
+        <p class="section-sub">Real projects delivered by&nbsp;the team I&nbsp;coordinated&nbsp;— click a&nbsp;card to&nbsp;open the case</p>
+        <div class="sites-grid">
+          <button type="button" class="site-card" data-case="boostmarine">
+            <span class="case-badge">Case</span>
+            <h4>Boost Marine</h4>
+            <p>Corporate website for&nbsp;a&nbsp;watercraft repair company&nbsp;— services, work portfolio, team, spare-parts shop.</p>
+            <p class="site-role">My role: deadline control and&nbsp;coordinating the team with the client</p>
+            <span class="site-cta">View case →</span>
+          </button>
+          <button type="button" class="site-card" data-case="a13">
+            <span class="case-badge">Case</span>
+            <h4>A13 Bureau</h4>
+            <p>Website for&nbsp;an&nbsp;architecture bureau specializing in&nbsp;glazed structures and&nbsp;facade systems.</p>
+            <p class="site-role">My role: deadline control and&nbsp;coordinating the team with the client</p>
+            <span class="site-cta">View case →</span>
+          </button>
+          <button type="button" class="site-card" data-case="revolutionprint">
+            <span class="case-badge">Case</span>
+            <h4>Revolution Print</h4>
+            <p>MVP platform for&nbsp;sales and&nbsp;production: print cost calculator, client CRM, orders, document generator.</p>
+            <p class="site-role">My role: deadline control and&nbsp;coordinating the team with the client</p>
+            <span class="site-cta">View case →</span>
+          </button>
+          <button type="button" class="site-card" data-case="aartatelier">
+            <span class="case-badge">Case</span>
+            <h4>Aart Atelier</h4>
+            <p>Creative bureau: art consulting, interior design, branding, video production, curated projects.</p>
+            <p class="site-role">My role: deadline control and&nbsp;coordinating the team with the client</p>
+            <span class="site-cta">View case →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container reveal">
+        <h2 class="section-title">Who I am and where this comes from</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h4>Operational support, not&nbsp;errands</h4>
+            <p>
+              I organized client negotiations, ran project document flow and&nbsp;controlled task execution by&nbsp;the team&nbsp;— taking on&nbsp;routine and&nbsp;chaos so&nbsp;that&nbsp;the leader has time for&nbsp;strategy.
+            </p>
+          </div>
+          <div class="card card-photo" style="background-image: url('decor-shotgun.webp');">
+            <h4>Candidate Master of&nbsp;Sport in&nbsp;clay shooting</h4>
+            <p>
+              6 years of&nbsp;clay target shooting&nbsp;— quick decisions under pressure and&nbsp;discipline are&nbsp;not&nbsp;abstract for&nbsp;me; they&rsquo;re a&nbsp;working mode forged by&nbsp;training and&nbsp;competition.
+            </p>
+          </div>
+          <div class="card card-photo" style="background-image: url('decor-basketball.jpg');">
+            <h4>10 years of&nbsp;basketball</h4>
+            <p>
+              In&nbsp;the game since childhood&nbsp;— the discipline and&nbsp;habit of&nbsp;giving everything for&nbsp;the result have long been part of&nbsp;my&nbsp;character.
+            </p>
+          </div>
+          <div class="card card-photo" style="background-image: url('decor-scales.webp');">
+            <h4>Reliability at&nbsp;work</h4>
+            <p>
+              I&nbsp;don&rsquo;t let the team or&nbsp;the client down&nbsp;— I&nbsp;keep my&nbsp;word and&nbsp;bring processes to&nbsp;a&nbsp;lasting result, not&nbsp;to&nbsp;the appearance that everything is&nbsp;done.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="traits">
+      <div class="container reveal">
+        <h2 class="section-title">How I work</h2>
+        <div class="traits-grid">
+          <div class="trait-card">
+            <div class="emoji">🧭</div>
+            <div class="title">Autonomous</div>
+            <div class="desc">I don&rsquo;t wait for&nbsp;instructions at&nbsp;every step&nbsp;— I&nbsp;propose a&nbsp;solution and&nbsp;come with&nbsp;a&nbsp;ready option</div>
+          </div>
+          <div class="trait-card">
+            <div class="emoji">🗂️</div>
+            <div class="title">Systematic</div>
+            <div class="desc">I&nbsp;like order, structure, playbooks&nbsp;— and&nbsp;I&nbsp;can build them from&nbsp;scratch</div>
+          </div>
+          <div class="trait-card">
+            <div class="emoji">🎯</div>
+            <div class="title">Finisher</div>
+            <div class="desc">Even when the plan shifts&nbsp;— I&nbsp;carry stages through to&nbsp;results instead of&nbsp;dropping them halfway</div>
+          </div>
+          <div class="trait-card">
+            <div class="emoji">🤝</div>
+            <div class="title">Honest</div>
+            <div class="desc">I&nbsp;say plainly where I&nbsp;lack experience instead of&nbsp;embellishing&nbsp;— and&nbsp;learn fast where there&rsquo;s a&nbsp;gap</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ps">
+      <div class="container reveal">
+        <div class="ps-panel">
+          <p><b>P.S.</b> I&nbsp;don&rsquo;t just respond to&nbsp;job postings&nbsp;— I&nbsp;wrote myself a&nbsp;Telegram bot that monitors suitable internships and&nbsp;vacancies on&nbsp;its own and&nbsp;sends them to&nbsp;me. One of&nbsp;the positions I&nbsp;applied for&nbsp;I&nbsp;found exactly that way&nbsp;— before I&nbsp;would have needed to&nbsp;search manually.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container reveal">
+        <h2 class="section-title">Skills</h2>
+        <div class="tags">
+          <span class="tag">Task planning and&nbsp;control</span>
+          <span class="tag">Document and&nbsp;technical spec preparation</span>
+          <span class="tag">Business correspondence and&nbsp;negotiations</span>
+          <span class="tag">Building hiring and&nbsp;onboarding</span>
+          <span class="tag">Reports and&nbsp;materials for&nbsp;management</span>
+          <span class="tag">Executive calendar and&nbsp;meetings</span>
+          <span class="tag">Yougile · quick to&nbsp;learn new task trackers</span>
+          <span class="tag">Contractor coordination</span>
+          <span class="tag">MS Excel / Google Sheets</span>
+          <span class="tag">English B2</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section id="contact">
+    <div class="container reveal">
+      <div class="contact-panel">
+        <h3>Looking for an&nbsp;assistant / project management role</h3>
+        <p>Moscow or&nbsp;remote · ready to&nbsp;take on&nbsp;operational load, document flow and&nbsp;team coordination</p>
+        <div class="button-row" style="justify-content: center;">
+          <a class="btn btn-primary" href="https://t.me/ALL_EX18">Telegram</a>
+          <a class="btn btn-secondary" href="mailto:Xyakimenko200656@gmail.com">Email</a>
+          <a class="btn btn-secondary" href="tel:+79775689460">+7 (977) 568-94-60</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">Alexander Yakimenko&nbsp;— I&nbsp;take operations and&nbsp;chaos off&nbsp;your plate so&nbsp;you have time for&nbsp;what matters.</div>
+  </footer>
+
+  <div class="modal-overlay" id="caseModalOverlay">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="caseModalTitle">
+      <button type="button" class="modal-close" id="caseModalClose" aria-label="Close">✕</button>
+      <div class="modal-slider" id="caseModalSlider" hidden>
+        <img class="modal-slider-img" id="caseModalSliderImg" src="" alt="" />
+        <button type="button" class="modal-slider-nav modal-slider-prev" id="caseModalPrev" aria-label="Previous photo">‹</button>
+        <button type="button" class="modal-slider-nav modal-slider-next" id="caseModalNext" aria-label="Next photo">›</button>
+        <div class="modal-slider-dots" id="caseModalDots"></div>
+      </div>
+      <h3 id="caseModalTitle"></h3>
+      <p class="modal-desc" id="caseModalDesc"></p>
+      <div class="modal-details" id="caseModalDetails" hidden></div>
+      <a class="modal-link" id="caseModalLink" target="_blank" rel="noopener" hidden>Open site →</a>
+    </div>
+  </div>
+
+  <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="script-en.js"></script>
+</body>
+</html>
